@@ -1,21 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './PageSelectionBar.less';
 
 const PageSelectionBar = () => {
     return (
         <div className="page-selection-bar-main-container">
             <div className="page-selection-bar-button-container">
-                <div className="page-selection-bar-button">My Team</div>
+                <Link to="/myteam" className="page-selection-bar-button">My Team</Link>
                 <div className="page-selection-bar-divider" />
-                <div className="page-selection-bar-button">Players</div>
+                <Link to="/players" className="page-selection-bar-button">Players</Link>
                 <div className="page-selection-bar-divider" />
-                <div className="page-selection-bar-button">Matchup</div>
+                <Link to="/matchup" className="page-selection-bar-button">Matchup</Link>
                 <div className="page-selection-bar-divider" />
-                <div className="page-selection-bar-button">Scoreboard</div>
+                <Link to="/scoreboard" className="page-selection-bar-button">Scoreboard</Link>
                 <div className="page-selection-bar-divider" />
-                <div className="page-selection-bar-button">League</div>
+                <Link to="/league" className="page-selection-bar-button">League</Link>
                 <div className="page-selection-bar-divider" />
-                <div className="page-selection-bar-button">Standings</div>
+                <Link to="/standings" className="page-selection-bar-button">Standings</Link>
             </div>
         </div>
     );

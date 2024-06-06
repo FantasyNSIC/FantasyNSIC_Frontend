@@ -2,7 +2,7 @@ import axios from "axios";
 import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
 
 // base URL for the backend API
-const fantasyURL = "http://127.0.0.1:5001"
+const fantasyURL = "http://localhost:5001"
 
 // API endpoints
 const getAvailablePlayersEndpoint = `${fantasyURL}/db/getAvailablePlayers`;

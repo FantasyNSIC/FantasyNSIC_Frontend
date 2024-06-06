@@ -11,8 +11,8 @@ export class NSICPlayer {
      * @param {number} team_id - The player's team ID
      * @param {string} pos - The player's position
      * @param {string} cls - The player's class
-     * @param {string} jersey_number - The player's jersey number
-     * @param {number} height - The player's height
+     * @param {number} jersey_number - The player's jersey number
+     * @param {string} height - The player's height
      * @param {number} weight - The player's weight
      */
     constructor(player_id, first_name, last_name, team_id, pos, cls, jersey_number, height, weight) {
@@ -133,7 +133,7 @@ export class NSICPlayer {
 
     /**
      * Set the player's jersey number
-     * @param {string} jersey_number - The player's jersey number
+     * @param {number} jersey_number - The player's jersey number
      */
     setJerseyNumber(jersey_number) {
         this.jersey_number = jersey_number;
@@ -141,7 +141,7 @@ export class NSICPlayer {
 
     /**
      * Get the player's height
-     * @returns {number} The player's height
+     * @returns {string} The player's height
      */
     getHeight() {
         return this.height;
@@ -207,5 +207,43 @@ export class NSICPlayer {
             height: this.height,
             weight: this.weight
         });
+    }
+
+    /**
+     * Convert tuple to NSICPlayer instance
+     * @param {array} tuple - Tuple representing NSICPlayer
+     * @returns {NSICPlayer} NSICPlayer instance
+     */
+    static fromTuple(tuple) {
+        return new NSICPlayer(
+            tuple[0],
+            tuple[1],
+            tuple[2],
+            tuple[3],
+            tuple[4],
+            tuple[5],
+            tuple[6],
+            tuple[7],
+            tuple[8]
+        );
+    }
+
+    /**
+     * Convert response to NSICPlayer instance
+     * @param {object} response - Response representing NSICPlayer
+     * @returns {NSICPlayer} NSICPlayer instance
+     */
+    static fromResponse(response) {
+        return new NSICPlayer(
+            response.player_id,
+            response.first_name,
+            response.last_name,
+            response.team_id,
+            response.pos,
+            response.cls,
+            response.jersey_number,
+            response.height,
+            response.weight
+        );
     }
 }

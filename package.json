@@ -30,13 +30,12 @@
       "url": "git+https://github.com/FantasyNSIC/FantasyNSIC_Frontend"
     },
     "keywords": [
-      "mayo",
-      "clinic",
-      "infusion",
-      "frontend",
-      "scheduling"
+      "football",
+      "fantasy",
+      "application",
+      "nsic"
     ],
-    "author": "MayoClinic",
+    "author": "NSICFantasy",
     "license": "ISC",
     "bugs": {
       "url": "https://github.com/FantasyNSIC/FantasyNSIC_Frontend/issues"
@@ -73,6 +72,7 @@
       "react-dom": "^18.2.0",
       "react-dom-factories": "^1.0.2",
       "react-router": "^6.22.0",
+      "react-icons": "^5.2.1",
       "react-router-dom": "^6.22.3"
     }
   }

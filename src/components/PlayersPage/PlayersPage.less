@@ -20,10 +20,156 @@
 
 .players-page-content-container {
     display: flex;
+    flex-direction: column;
     width: 90%;
     height: 115vh;
     background-color: rgb(255, 255, 255, 0.949);
     border: solid 2px rgb(248, 220, 83);
+    border-radius: 10px;
+}
+
+.players-page-filter-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    border-bottom: solid 2px black;
+}
+
+.players-page-filter-selection {
+    display: flex;
+    width: 700px;
+    justify-content: space-between;
+    margin-left: auto;
+    flex-direction: row;
+    align-items: center;
+}
+
+.players-page-available-players-text {
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 10px;
+    font-family: monospace;
+}
+
+.players-page-filter-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+    font-family: monospace;
+    border: solid 2px black;
+    border-radius: 20px;
+    background-color: rgb(226, 226, 226);
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
+
+.players-page-filter-button-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+    font-family: monospace;
+    border: solid 2px black;
+    border-radius: 20px;
+    background-color: rgb(149, 149, 149);
+}
+
+.players-page-search-bar {
+    width: 200px;
+    height: 25px;
+    background-color: transparent;
+    border: solid;
+    border-radius: 10px;
+}
+
+.players-page-player-info-headers {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    border-bottom: solid 2px black;
+}
+
+.players-page-player-info-header {
+    font-size: 17px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-left: var(--margin-left);
+}
+
+.players-page-player-object-container {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.players-page-player-object-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto
+}
+
+.players-page-player-object {
+    display: grid;
+    grid-template-columns: 12% 25% 13% 13% 13% 13% 13%;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 98%;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
+
+.players-page-object-team-logo {
+    width: 60px;
+    height: 60px;
+}
+
+.players-page-player-info {
+    font-size: 17px;
+    font-family: monospace;
+}
+
+.players-page-error-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.players-page-error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: monospace;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(255, 0, 0, 0.5);
+    border: solid 5px red;
     border-radius: 10px;
 }
 

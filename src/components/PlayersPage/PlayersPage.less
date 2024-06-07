@@ -70,6 +70,19 @@
     }
 }
 
+.players-page-filter-button-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+    font-family: monospace;
+    border: solid 2px black;
+    border-radius: 20px;
+    background-color: rgb(149, 149, 149);
+}
+
 .players-page-search-bar {
     width: 200px;
     height: 25px;
@@ -118,9 +131,12 @@
     margin-top: 5px;
     margin-bottom: 5px;
     width: 98%;
-    height: 100px;
     border: solid 2px black;
     border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
 }
 
 .players-page-object-team-logo {
@@ -131,6 +147,30 @@
 .players-page-player-info {
     font-size: 17px;
     font-family: monospace;
+}
+
+.players-page-error-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+}
+
+.players-page-error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: monospace;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(255, 0, 0, 0.5);
+    border: solid 5px red;
+    border-radius: 10px;
 }
 
 .players-page-footer-container {

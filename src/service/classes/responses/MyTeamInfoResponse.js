@@ -2,76 +2,76 @@ import { UserRoster } from "../UserRoster";
 
 export class MyTeamInfoResponse {
     constructor(teamName, leagueName, leagueConstraint, fullName, wins, losses, roster) {
-        this._teamName = teamName;
-        this._leagueName = leagueName;
-        this._leagueConstraint = leagueConstraint;
-        this._fullName = fullName;
-        this._wins = wins;
-        this._losses = losses;
-        this._roster = roster;
+        this.teamName = teamName;
+        this.leagueName = leagueName;
+        this.leagueConstraint = leagueConstraint;
+        this.fullName = fullName;
+        this.wins = wins;
+        this.losses = losses;
+        this.roster = roster;
     }
 
     // Getters and Setters for teamName
-    get teamName() {
-        return this._teamName;
+    getTeamName() {
+        return this.teamName;
     }
 
-    set teamName(teamName) {
-        this._teamName = teamName;
+    setTeamName(teamName) {
+        this.teamName = teamName;
     }
 
     // Getters and Setters for leagueName
-    get leagueName() {
-        return this._leagueName;
+    getLeagueName() {
+        return this.leagueName;
     }
 
-    set leagueName(leagueName) {
-        this._leagueName = leagueName;
+    setLeagueName(leagueName) {
+        this.leagueName = leagueName;
     }
 
     // Getters and Setters for leagueConstraint
-    get leagueConstraint() {
-        return this._leagueConstraint;
+    getLeagueConstraint() {
+        return this.leagueConstraint;
     }
 
-    set leagueConstraint(leagueConstraint) {
-        this._leagueConstraint = leagueConstraint;
+    setLeagueConstraint(leagueConstraint) {
+        this.leagueConstraint = leagueConstraint;
     }
 
     // Getters and Setters for fullName
-    get fullName() {
-        return this._fullName;
+    getFullName() {
+        return this.fullName;
     }
 
-    set fullName(fullName) {
-        this._fullName = fullName;
+    setFullName(fullName) {
+        this.fullName = fullName;
     }
 
     // Getters and Setters for wins
-    get wins() {
-        return this._wins;
+    getWins() {
+        return this.wins;
     }
 
-    set wins(wins) {
-        this._wins = wins;
+    setWins(wins) {
+        this.wins = wins;
     }
 
     // Getters and Setters for losses
-    get losses() {
-        return this._losses;
+    getLosses() {
+        return this.losses;
     }
 
-    set losses(losses) {
-        this._losses = losses;
+    setLosses(losses) {
+        this.losses = losses;
     }
 
     // Getters and Setters for roster
-    get roster() {
-        return this._roster;
+    getRoster() {
+        return this.roster;
     }
 
-    set roster(roster) {
-        this._roster = roster;
+    setRoster(roster) {
+        this.roster = roster;
     }
 
     // Convert the object to a JSON string
@@ -81,13 +81,13 @@ export class MyTeamInfoResponse {
 
     // Create a MyTeamInfoResponse object from a response object
     static fromResponse(response) {
-        const teamName = response.data.teamName;
-        const leagueName = response.data.leagueName;
-        const leagueConstraint = response.data.leagueConstraint;
-        const fullName = response.data.fullName;
-        const wins = response.data.wins;
-        const losses = response.data.losses;
-        const roster = UserRoster.fromResponse(response.data.roster);
+        const teamName = response.data._teamName;
+        const leagueName = response.data._leagueName;
+        const leagueConstraint = response.data._leagueConstraint;
+        const fullName = response.data._fullName;
+        const wins = response.data._wins;
+        const losses = response.data._losses;
+        const roster = UserRoster.fromResponse(response.data._roster);
         return new MyTeamInfoResponse(teamName, leagueName, leagueConstraint, fullName, wins, losses, roster);
     }
 }

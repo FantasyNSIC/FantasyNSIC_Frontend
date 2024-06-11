@@ -25,7 +25,20 @@ export class UserRoster {
      * @param {number} playerId - The player ID of the player to remove.
      */
     removePlayer(playerId) {
-        this.roster = this.roster.filter((p) => p.player.playerId !== playerId);
+        this.roster = this.roster.filter((p) => p.player.player_id !== playerId);
+    }
+
+    /**
+     * Search for a player by position and status.
+     * 
+     * @param {string} position - The position of the player.
+     * @param {string} status - The status of the player.
+     */
+    searchPlayer(position, status) {
+        if (position === 'ALL') {
+            return this.roster.filter((p) => p.status === status);
+        }
+        return this.roster.filter((p) => p.player.pos === position && p.status === status);
     }
 
     /**

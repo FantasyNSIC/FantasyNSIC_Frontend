@@ -40,7 +40,6 @@ const MyTeamPage = () => {
             try {
                 const response = await getMyTeamInfo(user_team_id);
                 // TODO: Set the team profile picture.
-                console.log(response);
                 setTeamName(response.teamName);
                 setTeamLeague(response.leagueName);
                 setLeagueConstraints(LeagueConstraint.fromConstraintsResponse(response.leagueConstraint));
@@ -134,7 +133,7 @@ const MyTeamPage = () => {
                         </div>
                         <div className="my-team-page-profile-picture-divider" />
                         <div className="my-team-page-team-details-container">
-                            <div className="my-team-page-team-details-name">
+                            <div className="my-team-page-team-details">
                                 <div className="my-team-page-team-details-name-text">{teamName}</div>
                             </div>
                             <div className="my-team-page-team-details-description">
@@ -142,7 +141,7 @@ const MyTeamPage = () => {
                                 <div className="my-team-page-team-details-description-divider" />
                                 <div className="my-team-page-team-details-description-userName">{teamFullName}</div>
                             </div>
-                            <div className="my-team-page-team-details-record">
+                            <div className="my-team-page-team-details">
                                 <div className="my-team-page-team-details-record-wins">Wins: {teamWins}</div>
                                 <div className="my-team-page-team-details-record-losses">Losses: {teamLosses}</div>
                             </div>

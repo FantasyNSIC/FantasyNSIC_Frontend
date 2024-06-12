@@ -127,6 +127,14 @@ export class LeagueConstraint {
     }
 
     /**
+     * Get the string representation of the constraints
+     * @returns {string} The string representation of the constraints
+     */
+    toString() {
+        return `QB: ${this.qb}, RB: ${this.rb}, WR: ${this.wr}, TE: ${this.te}, K: ${this.k}, Bench: ${this.bench}`;
+    }
+
+    /**
      * Forms new LeagueConstraint object from constraints response string.
      * @param {string} constraintsResponse - The constraints response string.
      * @returns {LeagueConstraint} - The new LeagueConstraint object.

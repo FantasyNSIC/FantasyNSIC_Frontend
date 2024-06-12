@@ -10,57 +10,57 @@ export class NSICTeam {
      * @param {string} abr - The abbreviation of the team.
      */
     constructor(team_id, team_name, abr) {
-        this._team_id = team_id;
-        this._team_name = team_name;
-        this._abr = abr;
+        this.team_id = team_id;
+        this.team_name = team_name;
+        this.abr = abr;
     }
 
     /**
      * Get the ID of the team.
      * @returns {number} The ID of the team.
      */
-    get team_id() {
-        return this._team_id;
+    getTeamId() {
+        return this.team_id;
     }
 
     /**
      * Set the ID of the team.
      * @param {number} team_id - The ID of the team.
      */
-    set team_id(team_id) {
-        this._team_id = team_id;
+    setTeamId(team_id) {
+        this.team_id = team_id;
     }
 
     /**
      * Get the name of the team.
      * @returns {string} The name of the team.
      */
-    get team_name() {
-        return this._team_name;
+    getTeamName() {
+        return this.team_name;
     }
 
     /**
      * Set the name of the team.
      * @param {string} team_name - The name of the team.
      */
-    set team_name(team_name) {
-        this._team_name = team_name;
+    setTeamName(team_name) {
+        this.team_name = team_name;
     }
 
     /**
      * Get the abbreviation of the team.
      * @returns {string} The abbreviation of the team.
      */
-    get abr() {
-        return this._abr;
+    getAbr() {
+        return this.abr;
     }
 
     /**
      * Set the abbreviation of the team.
      * @param {string} abr - The abbreviation of the team.
      */
-    set abr(abr) {
-        this._abr = abr;
+    setAbr(abr) {
+        this.abr = abr;
     }
 
     /**
@@ -69,9 +69,9 @@ export class NSICTeam {
      */
     toJson() {
         return JSON.stringify({
-            team_id: this._team_id,
-            team_name: this._team_name,
-            abr: this._abr
+            team_id: this.team_id,
+            team_name: this.team_name,
+            abr: this.abr
         });
     }
 

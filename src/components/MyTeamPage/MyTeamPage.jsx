@@ -17,9 +17,11 @@ const MyTeamPage = () => {
     const [searchParams] = useSearchParams();
     const user_team_id = searchParams.get("user_team_id");
 
-    // state for displaying error message
+    // state for displaying general error message, roster erros
     const [showError, setShowError] = useState(false);
     const [error, setError] = useState("");
+    const [rosterError, setRosterError] = useState("");
+    const [rosterErrorShow, setRosterErrorShow] = useState(false);
 
     // States for keeping track of user-team's display information.
     // TODO: Add functionality for using custom profile pictures.
@@ -83,16 +85,22 @@ const MyTeamPage = () => {
         // Create list of objects for each position to render.
         const activeQB = roster.searchPlayer("QB", "active");
         const objectsQB = conFunctions.compareConstraintQB(activeQB, constraints.getQB());
+        if (objectsQB[1] === true) { setRosterError("QB"); setRosterErrorShow(true);}
         const activeRB = roster.searchPlayer("RB", "active");
         const objectsRB = conFunctions.compareConstraintRB(activeRB, constraints.getRB());
+        if (objectsRB[1] === true) { setRosterError("RB"); setRosterErrorShow(true);}
         const activeWR = roster.searchPlayer("WR", "active");
         const objectsWR = conFunctions.compareConstraintWR(activeWR, constraints.getWR());
+        if (objectsWR[1] === true) { setRosterError("WR"); setRosterErrorShow(true);}
         const activeTE = roster.searchPlayer("TE", "active");
         const objectsTE = conFunctions.compareConstraintTE(activeTE, constraints.getTE());
+        if (objectsTE[1] === true) { setRosterError("TE"); setRosterErrorShow(true);}
         const activeK = roster.searchPlayer("K", "active");
         const objectsK = conFunctions.compareConstraintK(activeK, constraints.getK());
+        if (objectsK[1] === true) { setRosterError("K"); setRosterErrorShow(true);}
         const bench = roster.searchPlayer("ALL", "bench");
         const benchObjects = conFunctions.compareConstraintBench(bench, constraints.getBench());
+        if (benchObjects[1] === true) { setRosterError("Bench"); setRosterErrorShow(true);}
         return (
             <div className="my-team-page-roster-object-list">
                 {objectsQB[0].map((object, index) => <RosterObject 
@@ -108,6 +116,7 @@ const MyTeamPage = () => {
                 <div className="my-team-page-roster-object-divider" />
                 {benchObjects[0].map((object, index) => <RosterObject
                 key={index} player={object[0]} pos={object[1]} />)}
+                {/* TODO: Add overflow active roster spot? */}
             </div>
         )
     }
@@ -138,6 +147,9 @@ const MyTeamPage = () => {
                                 <div className="my-team-page-team-details-record-losses">Losses: {teamLosses}</div>
                             </div>
                         </div>
+                        {rosterErrorShow && (<div className="my-team-page-roster-error-message-container">
+                            You have too many players in the following positions: {rosterError}. Please contact a developer.
+                        </div>)}
                     </div>
                     <div className="my-team-page-roster-headings-container">
                         <div className="my-team-page-roster-header"

@@ -30,7 +30,6 @@ const LeaguePage = () => {
         const fetchLeagueInfo = async () => {
             try {
                 const response = await getLeagueInfo(league_id);
-                console.log('response:', response);
                 setLeagueName(response.league_name);
                 setLeagueConstraints(LeagueConstraint.fromConstraintsResponse(response.league_constraint));
                 setNumberOfTeams(response.number_of_teams);

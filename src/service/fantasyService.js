@@ -2,6 +2,7 @@ import axios from "axios";
 import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
 import { MyTeamInfoResponse } from "./classes/responses/MyTeamInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
+import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
 
 // base URL for the backend API
 const fantasyURL = "http://localhost:5001"
@@ -10,6 +11,7 @@ const fantasyURL = "http://localhost:5001"
 const getMyTeamInfoEndpoint = `${fantasyURL}/db/getMyTeamInfo`;
 const getAvailablePlayersEndpoint = `${fantasyURL}/db/getAvailablePlayers`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
+const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
 
 // GET functions
 export function getAvailablePlayers(league_id) {
@@ -49,6 +51,21 @@ export function getLeagueInfo(league_id) {
             console.log('Success', response);
             const leagueInfoResponse = LeagueInfoResponse.fromResponse(response);
             resolve(leagueInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getStandingsInfo(league_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getStandingsInfoEndpoint}?league_id=${league_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const standingsInfoResponse = StandingsInfoResponse.fromResponse(response);
+            resolve(standingsInfoResponse);
         })
         .catch((error) => {
             console.log('Error:', error);

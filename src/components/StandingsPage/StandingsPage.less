@@ -76,20 +76,13 @@
 }
 
 .standings-page-standings-object {
-    display: grid;
-    grid-template-columns: 10% 7% 20% 15% 15% 14% 10%;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     width: 100%;
     height: 100px;
     background-color: transparent;
     border-bottom: solid 2px black;
-}
-
-.standings-page-standings-object-text-place {
-    font-family: monospace;
-    font-size: 17px;
-    font-weight: bold;
-    margin-left: 60%;
 }
 
 .standings-page-standings-object-text {
@@ -98,10 +91,56 @@
     font-weight: bold;
 }
 
+.standings-page-standings-object-place-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14%;
+    height: 100px;
+    background-color: transparent;
+}
+
 .standings-page-standings-object-name-container {
     display: flex;
     align-items: center;
-    width: 150px;
+    justify-content: center;
+    width: 24%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-wins-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 11%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-losses-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-points-for-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-points-against-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17%;
     height: 100px;
     background-color: transparent;
 }

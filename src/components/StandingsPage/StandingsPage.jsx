@@ -40,14 +40,24 @@ const StandingsPage = () => {
         if (!teamRecord) return(<div></div>);
         return (
             <div className="standings-page-standings-object">
-                <div className="standings-page-standings-object-text-place">{place}</div>
+                <div className="standings-page-standings-object-place-container">
+                    <div className="standings-page-standings-object-text">{place}</div>
+                </div>
                 <div className="standings-page-standings-object-name-container">
                     <div className="standings-page-standings-object-text">{teamRecord.user_team_name}</div>
                 </div>
-                <div className="standings-page-standings-object-text">{teamRecord.wins}</div>
-                <div className="standings-page-standings-object-text">{teamRecord.losses}</div>
-                <div className="standings-page-standings-object-text">{teamRecord.points_for}</div>
-                <div className="standings-page-standings-object-text">{teamRecord.points_against}</div>
+                <div className="standings-page-standings-object-wins-container">
+                    <div className="standings-page-standings-object-text">{teamRecord.wins}</div>
+                </div>
+                <div className="standings-page-standings-object-losses-container">
+                    <div className="standings-page-standings-object-text">{teamRecord.losses}</div>
+                </div>
+                <div className="standings-page-standings-object-points-for-container">
+                    <div className="standings-page-standings-object-text">{teamRecord.points_for}</div>
+                </div>
+                <div className="standings-page-standings-object-points-against-container">
+                    <div className="standings-page-standings-object-text">{teamRecord.points_against}</div>
+                </div>
             </div>
         )
     }

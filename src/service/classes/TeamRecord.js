@@ -10,13 +10,15 @@ export class TeamRecord {
      * @param {number} losses - The number of losses.
      * @param {number} points_for - The points scored by the team.
      * @param {number} points_against - The points scored against the team.
+     * @param {string} user_team_name - The name of the user's team (optional).
      */
-    constructor(user_team_id, wins, losses, points_for, points_against) {
+    constructor(user_team_id, wins, losses, points_for, points_against, user_team_name = null) {
         this.user_team_id = user_team_id;
         this.wins = wins;
         this.losses = losses;
         this.points_for = points_for;
         this.points_against = points_against;
+        this.user_team_name = user_team_name;
     }
 
     /**
@@ -100,10 +102,36 @@ export class TeamRecord {
     }
 
     /**
+     * Gets the name of the user's team.
+     * @returns {string} The name of the user's team.
+     */
+    getUserTeamName() {
+        return this.user_team_name;
+    }
+
+    /**
+     * Sets the name of the user's team.
+     * @param {string} user_team_name - The name of the user's team.
+     */
+    setUserTeamName(user_team_name) {
+        this.user_team_name = user_team_name;
+    }
+
+    /**
      * Converts the TeamRecord object to a JSON string.
      * @returns {string} The JSON string representing the TeamRecord object.
      */
     toJson() {
+        if (this.user_team_name !== null) {
+            return JSON.stringify({
+                user_team_id: this.user_team_id,
+                wins: this.wins,
+                losses: this.losses,
+                points_for: this.points_for,
+                points_against: this.points_against,
+                user_team_name: this.user_team_name
+            });
+        }
         return JSON.stringify({
             user_team_id: this.user_team_id,
             wins: this.wins,
@@ -120,11 +148,42 @@ export class TeamRecord {
      */
     static fromJson(json) {
         const data = JSON.parse(json);
+        if ('user_team_name' in data) {
+            return new TeamRecord(
+                data.user_team_id,
+                data.wins,
+                data.losses,
+                data.points_for,
+                data.points_against,
+                data.user_team_name);
+        }
         return new TeamRecord(
             data.user_team_id,
             data.wins,
             data.losses,
             data.points_for,
             data.points_against);
+    }
+
+    /**
+     * Converts a response object into a TeamRecord object.
+     * @param {Object} response - The response object.
+     * @returns {TeamRecord} The TeamRecord object created from the response object.
+     */
+    static fromResponse(response) {
+        const user_team_id = response.user_team_id;
+        const wins = response.wins;
+        const losses = response.losses;
+        const points_for = response.points_for;
+        const points_against = response.points_against;
+        const user_team_name = response.user_team_name !== null ? response.user_team_name : null;
+        return new TeamRecord(
+            user_team_id,
+            wins,
+            losses,
+            points_for,
+            points_against,
+            user_team_name
+        );
     }
 }

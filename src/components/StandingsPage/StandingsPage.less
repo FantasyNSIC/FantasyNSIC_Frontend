@@ -20,10 +20,152 @@
 
 .standings-page-content-container {
     display: flex;
+    flex-direction: column;
     width: 90%;
     height: 115vh;
     background-color: rgb(255, 255, 255, 0.949);
     border: solid 2px rgb(248, 220, 83);
+    border-radius: 10px;
+}
+
+.standings-page-title-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+}
+
+.standings-page-title-text {
+    font-size: 25px;
+    font-weight: bold;
+    margin-left: 10px;
+    font-family: monospace;
+}
+
+.standings-page-header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-bottom: solid 2px black;
+}
+
+.standings-page-header-text {
+    font-size: 17px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-left: var(--margin-left);
+}
+
+.standings-page-standings-object-container {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.standings-page-standings-object-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.standings-page-standings-object {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.standings-page-standings-object-text {
+    font-family: monospace;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.standings-page-standings-object-place-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-name-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-wins-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 11%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-losses-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-points-for-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-standings-object-points-against-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.standings-page-error-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.standings-page-error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: monospace;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(255, 0, 0, 0.5);
+    border: solid 5px red;
     border-radius: 10px;
 }
 

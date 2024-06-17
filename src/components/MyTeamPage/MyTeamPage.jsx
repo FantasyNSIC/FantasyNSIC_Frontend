@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getMyTeamInfo } from "../../service/fantasyService.js";
-import * as conFunctions from "./compareRosterWithConstraint.js";
 import { getLogoFunction } from "../../images/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
-import { LeagueConstraint } from "../../service/classes/LeagueConstraint.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
@@ -28,7 +26,6 @@ const MyTeamPage = () => {
     const [teamProfilePicture, setTeamProfilePicture] = useState(EmptyProfile);
     const [teamName, setTeamName] = useState("--");
     const [teamLeague, setTeamLeague] = useState("--");
-    const [leagueConstraints, setLeagueConstraints] = useState(new LeagueConstraint(0, 0, 0, 0, 0, 0, 0));
     const [teamFullName, setTeamFullName] = useState("--");
     const [teamWins, setTeamWins] = useState("--");
     const [teamLosses, setTeamLosses] = useState("--");
@@ -42,11 +39,12 @@ const MyTeamPage = () => {
                 // TODO: Set the team profile picture.
                 setTeamName(response.teamName);
                 setTeamLeague(response.leagueName);
-                setLeagueConstraints(LeagueConstraint.fromConstraintsResponse(response.leagueConstraint));
                 setTeamFullName(response.fullName);
                 setTeamWins(response.wins);
                 setTeamLosses(response.losses);
                 setTeamRoster(response.roster);
+                setRosterErrorShow(response.overflowFlag);
+                setRosterError(response.overflowPos);
             } catch (exception) {
                 setError(exception.message); // Access the message property of the error
                 setShowError(true);
@@ -58,7 +56,7 @@ const MyTeamPage = () => {
     // Component for displaying the rostered players of the user-team.
     const RosterObject = ({player, pos}) => {
         if(!player && !pos) return(<div></div>);
-        if(!player) return(<div className="my-team-page-roster-object-empty">
+        if(!player || player.player_id === 0) return(<div className="my-team-page-roster-object-empty">
             <div className="my-team-page-roster-object-pos-box">{pos}</div>
         </div>);
         const name = `${player.first_name} ${player.last_name}`;
@@ -78,43 +76,23 @@ const MyTeamPage = () => {
 
     // Component for displaying the roster list of the user-team. 
     // Roster is UserRoster object. Constraints is LeagueConstraint object.
-    const RosterObjectList = ({roster, constraints}) => {
-        if (!constraints || !roster || constraints.getTotalPlayers() === 0) return(<div></div>);
-
-        // Create list of objects for each position to render.
-        const activeQB = roster.searchPlayer("QB", "active");
-        const objectsQB = conFunctions.compareConstraintQB(activeQB, constraints.getQB());
-        if (objectsQB[1] === true) { setRosterError("QB"); setRosterErrorShow(true);}
-        const activeRB = roster.searchPlayer("RB", "active");
-        const objectsRB = conFunctions.compareConstraintRB(activeRB, constraints.getRB());
-        if (objectsRB[1] === true) { setRosterError("RB"); setRosterErrorShow(true);}
-        const activeWR = roster.searchPlayer("WR", "active");
-        const objectsWR = conFunctions.compareConstraintWR(activeWR, constraints.getWR());
-        if (objectsWR[1] === true) { setRosterError("WR"); setRosterErrorShow(true);}
-        const activeTE = roster.searchPlayer("TE", "active");
-        const objectsTE = conFunctions.compareConstraintTE(activeTE, constraints.getTE());
-        if (objectsTE[1] === true) { setRosterError("TE"); setRosterErrorShow(true);}
-        const activeK = roster.searchPlayer("K", "active");
-        const objectsK = conFunctions.compareConstraintK(activeK, constraints.getK());
-        if (objectsK[1] === true) { setRosterError("K"); setRosterErrorShow(true);}
-        const bench = roster.searchPlayer("ALL", "bench");
-        const benchObjects = conFunctions.compareConstraintBench(bench, constraints.getBench());
-        if (benchObjects[1] === true) { setRosterError("Bench"); setRosterErrorShow(true);}
+    const RosterObjectList = ({roster}) => {
+        if (!roster) return(<div></div>);
         return (
             <div className="my-team-page-roster-object-list">
-                {objectsQB[0].map((object, index) => <RosterObject 
-                key={index} player={object[0]} pos={object[1]} />)}
-                {objectsRB[0].map((object, index) => <RosterObject 
-                key={index} player={object[0]} pos={object[1]} />)}
-                {objectsWR[0].map((object, index) => <RosterObject 
-                key={index} player={object[0]} pos={object[1]} />)}
-                {objectsTE[0].map((object, index) => <RosterObject 
-                key={index} player={object[0]} pos={object[1]} />)}
-                {objectsK[0].map((object, index) => <RosterObject 
-                key={index} player={object[0]} pos={object[1]} />)}
+                {roster.QB.map((object, index) => <RosterObject 
+                key={index} player={object} pos={"QB"} />)}
+                {roster.RB.map((object, index) => <RosterObject
+                key={index} player={object} pos={"RB"} />)}
+                {roster.WR.map((object, index) => <RosterObject
+                key={index} player={object} pos={"WR"} />)}
+                {roster.TE.map((object, index) => <RosterObject
+                key={index} player={object} pos={"TE"} />)}
+                {roster.K.map((object, index) => <RosterObject
+                key={index} player={object} pos={"K"} />)}
                 <div className="my-team-page-roster-object-divider" />
-                {benchObjects[0].map((object, index) => <RosterObject
-                key={index} player={object[0]} pos={object[1]} />)}
+                {roster.BENCH.map((object, index) => <RosterObject
+                key={index} player={object} pos={"BENCH"} />)}
                 {/* TODO: Add overflow active roster spot? */}
             </div>
         )
@@ -163,7 +141,7 @@ const MyTeamPage = () => {
                         style={{'--margin-left': `${15}%`}}>Action</div>
                     </div>
                     <div className="my-team-page-roster-container">
-                        <RosterObjectList roster={teamRoster} constraints={leagueConstraints} />
+                        <RosterObjectList roster={teamRoster} />
                         {showError && (<div className="my-team-page-error-message-container">
                             <div className="my-team-page-error-message-box">
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>

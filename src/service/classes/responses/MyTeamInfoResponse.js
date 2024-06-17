@@ -1,14 +1,16 @@
 import { UserRoster } from "../UserRoster";
 
 export class MyTeamInfoResponse {
-    constructor(teamName, leagueName, leagueConstraint, fullName, wins, losses, roster) {
+    constructor(teamName, leagueName, fullName, wins, losses, roster,
+        overflowFlag = false, overflowPos = "") {
         this.teamName = teamName;
         this.leagueName = leagueName;
-        this.leagueConstraint = leagueConstraint;
         this.fullName = fullName;
         this.wins = wins;
         this.losses = losses;
         this.roster = roster;
+        this.overflowFlag = overflowFlag;
+        this.overflowPos = overflowPos;
     }
 
     // Getters and Setters for teamName
@@ -27,15 +29,6 @@ export class MyTeamInfoResponse {
 
     setLeagueName(leagueName) {
         this.leagueName = leagueName;
-    }
-
-    // Getters and Setters for leagueConstraint
-    getLeagueConstraint() {
-        return this.leagueConstraint;
-    }
-
-    setLeagueConstraint(leagueConstraint) {
-        this.leagueConstraint = leagueConstraint;
     }
 
     // Getters and Setters for fullName
@@ -74,6 +67,24 @@ export class MyTeamInfoResponse {
         this.roster = roster;
     }
 
+    // Getters and Setters for overflowFlag
+    getOverflowFlag() {
+        return this.overflowFlag;
+    }
+
+    setOverflowFlag(overflowFlag) {
+        this.overflowFlag = overflowFlag;
+    }
+
+    // Getters and Setters for overflowPos
+    getOverflowPos() {
+        return this.overflowPos;
+    }
+
+    setOverflowPos(overflowPos) {
+        this.overflowPos = overflowPos;
+    }
+
     // Convert the object to a JSON string
     toJson() {
         return JSON.stringify(this);
@@ -81,13 +92,15 @@ export class MyTeamInfoResponse {
 
     // Create a MyTeamInfoResponse object from a response object
     static fromResponse(response) {
-        const teamName = response.data._teamName;
-        const leagueName = response.data._leagueName;
-        const leagueConstraint = response.data._leagueConstraint;
-        const fullName = response.data._fullName;
-        const wins = response.data._wins;
-        const losses = response.data._losses;
-        const roster = UserRoster.fromResponse(response.data._roster);
-        return new MyTeamInfoResponse(teamName, leagueName, leagueConstraint, fullName, wins, losses, roster);
+        const teamName = response.data.teamName;
+        const leagueName = response.data.leagueName;
+        const fullName = response.data.fullName;
+        const wins = response.data.wins;
+        const losses = response.data.losses;
+        const roster = UserRoster.fromResponse(response.data.roster);
+        const overflowFlag = response.data.overflowFlag;
+        const overflowPos = response.data.overflowPos;
+        return new MyTeamInfoResponse(teamName, leagueName, fullName, wins, losses,
+            roster, overflowFlag, overflowPos);
     }
 }

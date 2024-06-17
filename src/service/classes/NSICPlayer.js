@@ -172,6 +172,14 @@ export class NSICPlayer {
     }
 
     /**
+     * Defines an empty player
+     * @returns {NSICPlayer} NSICPlayer instance
+     */
+    static empty_player() {
+        return new NSICPlayer(0, '', '', 0, '', '', 0, '', 0);
+    }
+
+    /**
      * Convert JSON object to NSICPlayer instance
      * @param {object} json - JSON object representing NSICPlayer
      * @returns {NSICPlayer} NSICPlayer instance

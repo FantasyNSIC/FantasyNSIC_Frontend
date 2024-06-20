@@ -6,9 +6,9 @@ export class User_Team {
      * @param {number} user_id - The ID of the user
      * @param {string} team_name - The name of the team
      * @param {number} league_id - The ID of the league
-     * @param {string|null} full_name - The full name of the user (optional)
+     * @param {string|""} full_name - The full name of the user (optional)
      */
-    constructor(user_team_id, user_id, team_name, league_id, full_name = null) {
+    constructor(user_team_id, user_id, team_name, league_id, full_name = "") {
         this._user_team_id = user_team_id;
         this._user_id = user_id;
         this._team_name = team_name;
@@ -121,7 +121,7 @@ export class User_Team {
      * @returns {Object} The JSON representation of the User_Team object
      */
     toJSON() {
-        if (this._full_name !== null) {
+        if (this._full_name !== "") {
             return {
                 user_team_id: this._user_team_id,
                 user_id: this._user_id,
@@ -171,7 +171,7 @@ export class User_Team {
         const user_id = response.user_id;
         const team_name = response.team_name;
         const league_id = response.league_id;
-        const full_name = response.full_name !== null ? response.full_name : null;
+        const full_name = response.full_name !== null ? response.full_name : "";
         return new User_Team(
             user_team_id,
             user_id,

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
 import { MyTeamInfoResponse } from "./classes/responses/MyTeamInfoResponse.js";
+import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
+import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
 
@@ -10,10 +11,26 @@ const fantasyURL = "http://localhost:5001"
 // API endpoints
 const getMyTeamInfoEndpoint = `${fantasyURL}/db/getMyTeamInfo`;
 const getAvailablePlayersEndpoint = `${fantasyURL}/db/getAvailablePlayers`;
+const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
 
 // GET functions
+export function getMyTeamInfo(user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getMyTeamInfoEndpoint}?user_team_id=${user_team_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const myTeamInfoResponse = MyTeamInfoResponse.fromResponse(response);
+            resolve(myTeamInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error.message);
+            reject(error);
+        });
+    });
+}
+
 export function getAvailablePlayers(league_id) {
     return new Promise((resolve, reject) => {
         axios.get(`${getAvailablePlayersEndpoint}?league_id=${league_id}`)
@@ -29,16 +46,16 @@ export function getAvailablePlayers(league_id) {
     });
 }
 
-export function getMyTeamInfo(user_team_id) {
+export function getScroreboardInfo(league_id) {
     return new Promise((resolve, reject) => {
-        axios.get(`${getMyTeamInfoEndpoint}?user_team_id=${user_team_id}`)
+        axios.get(`${getScoreboardInfoEndpoint}?league_id=${league_id}`)
         .then((response) => {
             console.log('Success', response);
-            const myTeamInfoResponse = MyTeamInfoResponse.fromResponse(response);
-            resolve(myTeamInfoResponse);
+            const scoreboardInfoResponse = ScoreboardInfoResponse.fromResponse(response);
+            resolve(scoreboardInfoResponse);
         })
         .catch((error) => {
-            console.log('Error:', error.message);
+            console.log('Error:', error);
             reject(error);
         });
     });

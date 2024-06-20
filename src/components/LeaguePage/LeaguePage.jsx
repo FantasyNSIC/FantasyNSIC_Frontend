@@ -66,7 +66,7 @@ const LeaguePage = () => {
     }
 
     const UserTeamList = ({userTeamList}) => {
-        if (!userTeamList) return(<div></div>);
+        if (!userTeamList || userTeamList.length === 0) return(<div></div>);
         return (
             <div className="league-page-user-teams-list">
                 {userTeamList.map((userTeam, index) => (

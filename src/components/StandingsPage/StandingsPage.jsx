@@ -65,7 +65,7 @@ const StandingsPage = () => {
     // Component for displaying standings in a list.
     // Standings is an array of TeamRecord objects.
     const StandingsObjectList = ({standings}) => {
-        if (!standings) return(<div></div>);
+        if (!standings || standings._records.length === 0) return(<div></div>);
         standings.sortRecords();
         const standingsSorted = standings._records;
         // Create a list of StandingsObject components

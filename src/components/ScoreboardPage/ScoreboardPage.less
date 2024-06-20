@@ -20,10 +20,194 @@
 
 .scoreboard-page-content-container {
     display: flex;
+    flex-direction: column;
     width: 90%;
     height: 115vh;
     background-color: rgb(255, 255, 255, 0.949);
     border: solid 2px rgb(248, 220, 83);
+    border-radius: 10px;
+}
+
+.scoreboard-page-scoreboard-object-container {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.scoreboard-page-scoreboard-object-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    overflow: scroll;
+}
+
+.scoreboard-page-heading-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+}
+
+.scoreboard-page-heading-league-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+}
+
+.scoreboard-page-heading-league-text {
+    font-size: 30px;
+    margin-left: 10px;
+    font-family: monospace;
+}
+
+.scoreboard-page-heading-week-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.scoreboard-page-heading-week-text {
+    font-size: 20px;
+    margin-left: 10px;
+    font-family: monospace;
+}
+
+.scoreboard-page-week-dropdown {
+    width: 150px;
+    height: 25px;
+    margin-left: 60%;
+    border-radius: 10px;
+}
+
+.scroeboard-page-scoreboard-object {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    height: 150px;
+    margin-top: 10px;
+    background-color: transparent;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
+
+.scoreboard-page-scoreboard-object-team-general-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.scoreboard-page-scoreboard-object-profile-picture-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+}
+
+.scoreboard-page-scoreboard-object-profile-picture {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+}
+
+.scoreboard-page-scoreboard-object-picture-divider {
+    height: 70%;
+    border-left: solid 2px black;
+}
+
+.scoreboard-page-scoreboard-object-team-name-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+}
+
+.scoreboard-page-scoreboard-object-team-name-text {
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.scoreboard-page-scoreboard-object-points-record-container {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%;
+}
+
+.scoreboard-page-scoreboard-object-points-conainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 80%;
+    background-color: transparent;
+}
+
+.scoreboard-page-scoreboard-object-points-text {
+    font-size: 30px;
+    font-family: monospace;
+    margin-left: 40px;
+}
+
+.scoreboard-page-scoreboard-object-record-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 20%;
+    background-color: transparent;
+}
+
+.scoreboard-page-scoreboard-object-record-text {
+    font-size: 15px;
+    font-family: monospace;
+    margin-left: 40px;
+}
+
+.scoreboard-page-scoreboard-object-divider {
+    height: 100%;
+    border-left: solid 2px black;
+}
+
+.scoreboard-page-error-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.scoreboard-page-error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: monospace;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(255, 0, 0, 0.5);
+    border: solid 5px red;
     border-radius: 10px;
 }
 

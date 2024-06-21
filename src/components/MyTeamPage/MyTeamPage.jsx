@@ -67,8 +67,7 @@ const MyTeamPage = () => {
                 <div className="my-team-page-roster-object-info">{name}</div>
                 <div className="my-team-page-roster-object-info">{player.pos}</div>
                 <div className="my-team-page-roster-object-info">{player.cls}</div>
-                {/* TODO: Implement player season fantasy points. */}
-                <div className="my-team-page-roster-object-info">{0}</div>
+                <div className="my-team-page-roster-object-info">{player.total_points}</div>
                 <div className="my-team-page-roster-move-button">Move</div>
             </div>
         );

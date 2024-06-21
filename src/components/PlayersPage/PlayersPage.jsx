@@ -55,8 +55,7 @@ const PlayersPage = () => {
                 <div className="players-page-player-info">{player.cls}</div>
                 <div className="players-page-player-info">{player.height}</div>
                 <div className="players-page-player-info">{player.weight}</div>
-                {/* TODO: implement player season fantasy points */}
-                <div className="players-page-player-info">{0}</div>
+                <div className="players-page-player-info">{player.total_points}</div>
             </div>
         )
     }
@@ -123,7 +122,6 @@ const PlayersPage = () => {
                         style={{'--margin-left': `${8}%`}}>Weight</div>
                         <div className="players-page-player-info-header"
                         style={{'--margin-left': `${8}%`}}>Points</div>
-                        {/* TODO: Add composite 2024 fantsy points */}
                     </div>
                     <div className="players-page-player-object-container">
                         <PlayerObjectList players={resPlayers} filter={activeFilter} />

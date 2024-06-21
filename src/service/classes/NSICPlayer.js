@@ -14,8 +14,9 @@ export class NSICPlayer {
      * @param {number} jersey_number - The player's jersey number
      * @param {string} height - The player's height
      * @param {number} weight - The player's weight
+     * @param {number} total_points - The player's total points
      */
-    constructor(player_id, first_name, last_name, team_id, pos, cls, jersey_number, height, weight) {
+    constructor(player_id, first_name, last_name, team_id, pos, cls, jersey_number, height, weight, total_points = 0.0) {
         this.player_id = player_id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -25,6 +26,7 @@ export class NSICPlayer {
         this.jersey_number = jersey_number;
         this.height = height;
         this.weight = weight;
+        this.total_points = total_points;
     }
 
     /**
@@ -172,6 +174,23 @@ export class NSICPlayer {
     }
 
     /**
+     * Get the player's total points
+     * @returns {number} The player's total points
+     */
+    getTotalPoints() {
+        return this.total_points;
+    }
+
+    /**
+     * Set the player's total points
+     * @param {number} total_points - The player's total points
+     * @returns {number} The player's total points
+     */
+    setTotalPoints(total_points) {
+        this.total_points = total_points;
+    }
+
+    /**
      * Defines an empty player
      * @returns {NSICPlayer} NSICPlayer instance
      */
@@ -195,7 +214,8 @@ export class NSICPlayer {
             data.cls,
             data.jersey_number,
             data.height,
-            data.weight
+            data.weight,
+            data.total_points
         );
     }
 
@@ -213,7 +233,8 @@ export class NSICPlayer {
             cls: this.cls,
             jersey_number: this.jersey_number,
             height: this.height,
-            weight: this.weight
+            weight: this.weight,
+            total_points: this.total_points
         });
     }
 
@@ -232,7 +253,8 @@ export class NSICPlayer {
             tuple[5],
             tuple[6],
             tuple[7],
-            tuple[8]
+            tuple[8],
+            tuple[9]
         );
     }
 
@@ -251,7 +273,8 @@ export class NSICPlayer {
             response.cls,
             response.jersey_number,
             response.height,
-            response.weight
+            response.weight,
+            response.total_points
         );
     }
 }

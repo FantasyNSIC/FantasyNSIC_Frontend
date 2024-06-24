@@ -118,6 +118,14 @@ export class TeamRecord {
     }
 
     /**
+     * Returns an empty TeamRecord object.
+     * @returns {TeamRecord} An empty TeamRecord object.
+     */
+    static empty() {
+        return new TeamRecord(0, 0, 0, 0.0, 0.0, "");
+    }
+
+    /**
      * Converts the TeamRecord object to a JSON string.
      * @returns {string} The JSON string representing the TeamRecord object.
      */

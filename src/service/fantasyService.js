@@ -1,6 +1,7 @@
 import axios from "axios";
 import { MyTeamInfoResponse } from "./classes/responses/MyTeamInfoResponse.js";
 import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
+import { MatchupInfoResponse } from "./classes/responses/MatchupInfoResponse.js";
 import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
@@ -11,6 +12,7 @@ const fantasyURL = "http://localhost:5001"
 // API endpoints
 const getMyTeamInfoEndpoint = `${fantasyURL}/db/getMyTeamInfo`;
 const getAvailablePlayersEndpoint = `${fantasyURL}/db/getAvailablePlayers`;
+const getMatchupInfoEndpoint = `${fantasyURL}/db/getMatchupInfo`;
 const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
@@ -41,6 +43,21 @@ export function getAvailablePlayers(league_id) {
         })
         .catch((error) => {
             console.log('Error:', error.message);
+            reject(error);
+        });
+    });
+}
+
+export function getMatchupInfo(user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getMatchupInfoEndpoint}?user_team_id=${user_team_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const matchupInfoResponse = MatchupInfoResponse.fromResponse(response);
+            resolve(matchupInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
             reject(error);
         });
     });

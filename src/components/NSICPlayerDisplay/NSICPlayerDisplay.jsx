@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { getNSICPlayerInfo } from "../../service/fantasyService";
 import { FiAlertTriangle } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import { NSICPlayer } from "../../service/classes/NSICPlayer";
 import { NSICTeam } from "../../service/classes/NSICTeam";
 import { PlayerStats2023 } from "../../service/classes/PlayerStats2023";
@@ -42,7 +43,7 @@ const NSICPlayerDisplay = ({handleClose, player_id}) => {
         (
         <div className="nsic-player-display-overlay">
             <div className="nsic-player-display-content" onClick={(e) => e.stopPropagation()}>
-
+                
             </div>
         </div>
         ), document.getElementById("portal-root")

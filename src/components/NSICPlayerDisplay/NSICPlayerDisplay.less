@@ -17,10 +17,34 @@
     flex-direction: column;
     width: 700px;
     height: 90%;
-    padding: 20px;
+    padding: 5px;
     background-color: rgb(226, 226, 226);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border: solid 3px #000;
     border-radius: 10px;
     z-index: 1001;
+}
+
+.nsic-player-display-heading-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 30px;
+    direction: rtl;
+}
+
+.nsic-player-display-x-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        border: solid 2px gray;
+        cursor: pointer;
+    }
 }

@@ -64,6 +64,14 @@ export class NSICTeam {
     }
 
     /**
+     * Create an empty representation of a NSICTeam object.
+     * @returns {NSICTeam} An empty NSICTeam object.
+     */
+    static empty() {
+        return new NSICTeam(0, "", "");
+    }
+
+    /**
      * Convert the NSICTeam object to a JSON string.
      * @returns {string} The JSON representation of the NSICTeam object.
      */
@@ -83,5 +91,14 @@ export class NSICTeam {
     static fromJson(json) {
         const data = JSON.parse(json);
         return new NSICTeam(data.team_id, data.team_name, data.abr);
+    }
+
+    /**
+     * Create a NSICTeam object from a response object.
+     * @param {object} response - The response object.
+     * @returns {NSICTeam} The NSICTeam object created from the response object.
+     */
+    static fromResponse(response) {
+        return new NSICTeam(response.team_id, response.team_name, response.abr);
     }
 }

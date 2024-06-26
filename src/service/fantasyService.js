@@ -1,4 +1,6 @@
 import axios from "axios";
+
+// GET
 import { MyTeamInfoResponse } from "./classes/responses/MyTeamInfoResponse.js";
 import { AvailablePlayersResponse } from "./classes/responses/AvailablePlayersResponse.js";
 import { MatchupInfoResponse } from "./classes/responses/MatchupInfoResponse.js";
@@ -6,10 +8,13 @@ import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoRespon
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
 
+// POST
+import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
+
 // base URL for the backend API
 const fantasyURL = "http://localhost:5001"
 
-// API endpoints
+// API endpoints GET
 const getMyTeamInfoEndpoint = `${fantasyURL}/db/getMyTeamInfo`;
 const getAvailablePlayersEndpoint = `${fantasyURL}/db/getAvailablePlayers`;
 const getMatchupInfoEndpoint = `${fantasyURL}/db/getMatchupInfo`;
@@ -17,7 +22,10 @@ const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
 
-// GET functions
+// API endpoints POST
+const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
+
+// GET functions =============================================================
 export function getMyTeamInfo(user_team_id) {
     return new Promise((resolve, reject) => {
         axios.get(`${getMyTeamInfoEndpoint}?user_team_id=${user_team_id}`)
@@ -100,6 +108,26 @@ export function getStandingsInfo(league_id) {
             console.log('Success', response);
             const standingsInfoResponse = StandingsInfoResponse.fromResponse(response);
             resolve(standingsInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+// POST functions ============================================================
+export function getNSICPlayerInfo(player_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${getNSICPlayerInfoEndpoint}`, {player_id: player_id}, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const nsicPlayerResponse = NSICPlayerResponse.fromResponse(response);
+            resolve(nsicPlayerResponse);
         })
         .catch((error) => {
             console.log('Error:', error);

@@ -5,6 +5,7 @@ import { getLogoFunction } from "../../images/getLogoFuncion.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
+import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
 import "./PlayersPage.less";
 
 const PlayersPage = () => {
@@ -21,6 +22,10 @@ const PlayersPage = () => {
 
     // state to hold search bar input
     const [searchInput, setSearchInput] = useState("");
+
+    // state for displaying player display.
+    const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
+    const [playerID, setPlayerID] = useState(0);
 
     // state for displaying error message
     const [showError, setShowError] = useState(false);
@@ -45,10 +50,22 @@ const PlayersPage = () => {
         setActiveFilter(filter);
     }
 
+    // Function for handling displaying pop up when player is clicked.
+    function handlePlayerDisplay(player_id) {
+        setPlayerID(player_id);
+        setShowPlayerDisplay(true);
+    }
+
+    // Handles closing the player display.
+    function closePlayerDisplay() {
+        setShowPlayerDisplay(false);
+        setPlayerID(0);
+    }
+
     const PlayerObject = ({player}) => {
         const name = `${player.first_name} ${player.last_name}`
         return (
-            <div className="players-page-player-object">
+            <div className="players-page-player-object" onClick={() => handlePlayerDisplay(player.player_id)}>
                 <img className="players-page-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="players-page-player-info">{name}</div>
                 <div className="players-page-player-info">{player.pos}</div>
@@ -130,6 +147,8 @@ const PlayersPage = () => {
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>
                             </div>)}
                     </div>
+                    {showPlayerDisplay && <NSICPlayerDisplay
+                        handleClose={closePlayerDisplay} player_id={playerID} />}
                 </div>
             </div>
             <div className="players-page-footer-container" />

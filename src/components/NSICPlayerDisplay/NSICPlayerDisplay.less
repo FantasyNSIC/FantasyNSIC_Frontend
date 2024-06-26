@@ -17,12 +17,57 @@
     flex-direction: column;
     width: 700px;
     height: 90%;
-    padding: 5px;
     background-color: rgb(226, 226, 226);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border: solid 3px #000;
+    border: solid 1px rgb(226, 226, 226);
     border-radius: 10px;
     z-index: 1001;
+}
+
+.nsic-player-display-top-info-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 35%;
+    border-bottom: solid 2px black;
+}
+
+.nsic-player-display-top-info-diag-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(226, 226, 226);
+    clip-path: polygon(50% 0%, 100% 0%, 70% 100%, 20% 100%);
+}
+
+.nsic-player-display-top-indo-diag-alternate {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    clip-path: polygon(65% 0%, 85% 0%, 55% 100%, 35% 100%);
+}
+
+.nsic-player-display-top-info-team-graphic {
+    display: flex;
+    width: 45%;
+    height: 100%;
+    background-color: var(--background-color);
+    border-top-left-radius: 10px;
+}
+
+.nsic-player-display-team-big-logo {
+    width: 150px;
+    height: 150px;
+    padding: 10px;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.nsic-player-display-top-info-player-general-container {
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    height: 100%;
+    border-top-right-radius: 10px;
 }
 
 .nsic-player-display-heading-buttons {
@@ -31,6 +76,7 @@
     width: 100%;
     height: 30px;
     direction: rtl;
+    padding-top: 5px;
 }
 
 .nsic-player-display-x-button {

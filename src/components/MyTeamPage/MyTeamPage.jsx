@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getMyTeamInfo } from "../../service/fantasyService.js";
-import { getLogoFunction } from "../../images/getLogoFuncion.js";
+import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";

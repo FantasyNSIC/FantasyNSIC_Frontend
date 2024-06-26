@@ -30,7 +30,7 @@ export function getTeamColorMain(team_id) {
         case 13:
             return "rgb(75, 8, 161)";
         default:
-            return "#000000";
+            return "rgb(226, 226, 226)";
     };
 }
 
@@ -64,6 +64,6 @@ export function getTeamColorSecondary(team_id) {
         case 13:
             return "rgb(255, 255, 255)";
         default:
-            return "#000000";
+            return "rgb(226, 226, 226)";
     };
 }

@@ -7,6 +7,7 @@ import { TeamRecord } from "../../service/classes/TeamRecord.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
+import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
 import EmptyProfile from '../../images/EmptyProfile.png'
 import "./MatchupPage.less";
 
@@ -31,6 +32,11 @@ const MatchupPage = () => {
     const [team_2_points, setTeam2Points] = useState(0.0);
     const [team_2_roster, setTeam2Roster] = useState(new UserRoster());
     const [team_2_picture, setTeam2Picture] = useState(EmptyProfile);
+
+    // state for displaying player display.
+    const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
+    const [playerID, setPlayerID] = useState(0);
+    const [playerPos, setPlayerPos] = useState("");
 
     // State for displaying error message
     const [showError, setShowError] = useState(false);
@@ -67,6 +73,20 @@ const MatchupPage = () => {
         return `Week ${textList[1]}`;
     }
 
+    // Handles closing the player display.
+    function closePlayerDisplay() {
+        setShowPlayerDisplay(false);
+        setPlayerID(0);
+        setPlayerPos("");
+    }
+
+    // Function for handling displaying pop up when player is clicked.
+    function handlePlayerDisplay(player_id, player_pos) {
+        setPlayerID(player_id);
+        setPlayerPos(player_pos);
+        setShowPlayerDisplay(true);
+    }
+
     // Component for displaying the rostered players of any given team.
     const MatchupRosterObject = ({player, pos, isRight = false}) => {
         if(!player && !pos) return(<div></div>);
@@ -82,7 +102,8 @@ const MatchupPage = () => {
                     <img className="matchup-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
                 </div>
                 <div className="matchup-page-roster-object-name-container">
-                    <div className="matchup-page-roster-object-info">{name}</div>
+                    <div className="matchup-page-roster-object-info-name"
+                        onClick={() => handlePlayerDisplay(player.player_id, player.pos)}>{name}</div>
                 </div>
                 <div className="matchup-pahe-roster-object-pos-container">
                     <div className="matchup-page-roster-object-info">{player.pos}</div>
@@ -199,6 +220,9 @@ const MatchupPage = () => {
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>
                             </div>)}
                     </div>
+                    {showPlayerDisplay && <NSICPlayerDisplay
+                        handleClose={closePlayerDisplay} player_id={playerID}
+                        playerPos={playerPos} actionButton={"none"}/>}
                 </div>
             </div>
             <div className="matchup-page-footer-container" />

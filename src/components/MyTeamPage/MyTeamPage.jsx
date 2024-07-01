@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getMyTeamInfo } from "../../service/fantasyService.js";
-import { getLogoFunction } from "../../images/getLogoFuncion.js";
+import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
+import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
 import EmptyProfile from '../../images/EmptyProfile.png'
 import "./MyTeamPage.less";
 
@@ -31,6 +32,11 @@ const MyTeamPage = () => {
     const [teamLosses, setTeamLosses] = useState("--");
     const [teamRoster, setTeamRoster] = useState(new UserRoster());
 
+    // state for displaying player display.
+    const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
+    const [playerID, setPlayerID] = useState(0);
+    const [playerPos, setPlayerPos] = useState("");
+
     // Fetch the user-team's information and roster when the component renders.
     useEffect(() => {
         const fetchMyTeamInfo = async () => {
@@ -53,6 +59,20 @@ const MyTeamPage = () => {
         fetchMyTeamInfo();
     }, []);
 
+    // Function for handling displaying pop up when player is clicked.
+    function handlePlayerDisplay(player_id, player_pos) {
+        setPlayerID(player_id);
+        setPlayerPos(player_pos);
+        setShowPlayerDisplay(true);
+    }
+
+    // Handles closing the player display.
+    function closePlayerDisplay() {
+        setShowPlayerDisplay(false);
+        setPlayerID(0);
+        setPlayerPos("");
+    }
+
     // Component for displaying the rostered players of the user-team.
     const RosterObject = ({player, pos}) => {
         if(!player && !pos) return(<div></div>);
@@ -64,7 +84,8 @@ const MyTeamPage = () => {
             <div className="my-team-page-roster-object">
                 <div className="my-team-page-roster-object-pos-box">{pos}</div>
                 <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
-                <div className="my-team-page-roster-object-info">{name}</div>
+                <div className="my-team-page-roster-object-info-name"
+                    onClick={() => handlePlayerDisplay(player.player_id, player.pos)}>{name}</div>
                 <div className="my-team-page-roster-object-info">{player.pos}</div>
                 <div className="my-team-page-roster-object-info">{player.cls}</div>
                 <div className="my-team-page-roster-object-info">{player.total_points}</div>
@@ -146,6 +167,9 @@ const MyTeamPage = () => {
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>
                             </div>)}
                     </div>
+                    {showPlayerDisplay && <NSICPlayerDisplay
+                        handleClose={closePlayerDisplay} player_id={playerID}
+                        playerPos={playerPos} actionButton={"drop"}/>}
                 </div>
             </div>
             <div className="my-team-page-footer-container" />

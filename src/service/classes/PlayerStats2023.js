@@ -70,11 +70,27 @@ export class PlayerStats2023 {
     }
 
     /**
+     * Set the player's ID.
+     * @param {number} playerId - The player's ID.
+     */
+    setPlayerId(playerId) {
+        this.player_id = playerId;
+    }
+
+    /**
      * Get the number of games played.
      * @returns {number} The number of games played.
      */
     getGamesPlayed() {
         return this.gp;
+    }
+
+    /**
+     * Set the number of games played.
+     * @param {number} gamesPlayed - The number of games played.
+     */
+    setGamesPlayed(gamesPlayed) {
+        this.gp = gamesPlayed;
     }
 
     /**
@@ -86,11 +102,27 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the number of rushing attempts.
+    * @param {number} rushingAttempts - The number of rushing attempts.
+    */
+    setRushingAttempts(rushingAttempts) {
+        this.rush_att = rushingAttempts;
+    }
+
+    /**
     * Get the number of rushing yards.
     * @returns {number} The number of rushing yards.
     */
     getRushingYards() {
         return this.rush_yds;
+    }
+
+    /**
+    * Set the number of rushing yards.
+    * @param {number} rushingYards - The number of rushing yards.
+    */
+    setRushingYards(rushingYards) {
+        this.rush_yds = rushingYards;
     }
 
     /**
@@ -102,11 +134,27 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the average rushing yards per attempt.
+    * @param {number} rushingAverage - The average rushing yards per attempt.
+    */
+    setRushingAverage(rushingAverage) {
+        this.rush_avg = rushingAverage;
+    }
+
+    /**
     * Get the number of rushing touchdowns.
     * @returns {number} The number of rushing touchdowns.
     */
     getRushingTouchdowns() {
         return this.rush_td;
+    }
+
+    /**
+    * Set the number of rushing touchdowns.
+    * @param {number} rushingTouchdowns - The number of rushing touchdowns.
+    */
+    setRushingTouchdowns(rushingTouchdowns) {
+        this.rush_td = rushingTouchdowns;
     }
 
     /**
@@ -118,6 +166,14 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the number of completed passes.
+    * @param {number} passingCompletions - The number of completed passes.
+    */
+    setPassingCompletions(passingCompletions) {
+        this.pass_comp = passingCompletions;
+    }
+
+    /**
     * Get the number of pass attempts.
     * @returns {number} The number of pass attempts.
     */
@@ -126,11 +182,27 @@ export class PlayerStats2023 {
     }
     
     /**
+    * Set the number of pass attempts.
+    * @param {number} passingAttempts - The number of pass attempts.
+    */
+    setPassingAttempts(passingAttempts) {
+        this.pass_att = passingAttempts;
+    }
+
+    /**
     * Get the number of passing yards.
     * @returns {number} The number of passing yards.
     */
     getPassingYards() {
         return this.pass_yds;
+    }
+
+    /**
+    * Set the number of passing yards.
+    * @param {number} passingYards - The number of passing yards.
+    */
+    setPassingYards(passingYards) {
+        this.pass_yds = passingYards;
     }
 
     /**
@@ -142,11 +214,27 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the number of passing touchdowns.
+    * @param {number} passingTouchdowns - The number of passing touchdowns.
+    */
+    setPassingTouchdowns(passingTouchdowns) {
+        this.pass_td = passingTouchdowns;
+    }
+
+    /**
     * Get the number of interceptions thrown.
     * @returns {number} The number of interceptions thrown.
     */
     getInterceptionsThrown() {
         return this.pass_int;
+    }
+
+    /**
+    * Set the number of interceptions thrown.
+    * @param {number} interceptionsThrown - The number of interceptions thrown.
+    */
+    setInterceptionsThrown(interceptionsThrown) {
+        this.pass_int = interceptionsThrown;
     }
 
     /**
@@ -158,11 +246,27 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the number of receptions.
+    * @param {number} receptions - The number of receptions.
+    */
+    setReceptions(receptions) {
+        this.recieve_rec = receptions;
+    }
+
+    /**
     * Get the number of receiving yards.
     * @returns {number} The number of receiving yards.
     */
     getReceivingYards() {
         return this.recieve_yds;
+    }
+
+    /**
+    * Set the number of receiving yards.
+    * @param {number} receivingYards - The number of receiving yards.
+    */
+    setReceivingYards(receivingYards) {
+        this.recieve_yds = receivingYards;
     }
 
     /**
@@ -174,11 +278,27 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the average receiving yards per reception.
+    * @param {number} receivingAverage - The average receiving yards per reception.
+    */
+    setReceivingAverage(receivingAverage) {
+        this.recieve_avg = receivingAverage;
+    }
+
+    /**
     * Get the number of receiving touchdowns.
     * @returns {number} The number of receiving touchdowns.
     */
     getReceivingTouchdowns() {
         return this.recieve_td;
+    }
+
+    /**
+    * Set the number of receiving touchdowns.
+    * @param {number} receivingTouchdowns - The number of receiving touchdowns.
+    */
+    setReceivingTouchdowns(receivingTouchdowns) {
+        this.recieve_td = receivingTouchdowns;
     }
 
     /**
@@ -190,11 +310,156 @@ export class PlayerStats2023 {
     }
 
     /**
+    * Set the number of field goal attempts.
+    * @param {number} fieldGoalAttempts - The number of field goal attempts.
+    */
+    setFieldGoalAttempts(fieldGoalAttempts) {
+        this.fg_att = fieldGoalAttempts;
+    }
+
+    /**
     * Get the number of field goals made.
     * @returns {number} The number of field goals made.
     */
     getFieldGoalsMade() {
         return this.fg_made;
+    }
+
+    /**
+    * Set the number of field goals made.
+    * @param {number} fieldGoalsMade - The number of field goals made.
+    */
+    setFieldGoalsMade(fieldGoalsMade) {
+        this.fg_made = fieldGoalsMade;
+    }
+
+    /**
+     * Create an empty PlayerStats2023 object.
+     * @param {number} playerId - The player's ID.
+     * @returns {PlayerStats2023} The empty PlayerStats2023 object.
+     */
+    static empty(playerId) {
+        return new PlayerStats2023(playerId, 0, 0, 0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0, 0.0, 0, 0, 0);
+    }
+
+    /**
+     * Filters stats based on input pos.
+     * @param {string} pos - The position of the player.
+     * @returns {dict} The filtered dictionary object.
+     */
+    filterStats(pos) {
+        if (pos === "RB") {
+            return {
+                gp: this.gp,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td,
+                recieve_rec: this.recieve_rec,
+                recieve_yds: this.recieve_yds,
+                recieve_avg: this.recieve_avg,
+                recieve_td: this.recieve_td
+            };
+        }
+        else if (pos === "QB") {
+            return {
+                gp: this.gp,
+                pass_comp: this.pass_comp,
+                pass_att: this.pass_att,
+                pass_yds: this.pass_yds,
+                pass_td: this.pass_td,
+                pass_int: this.pass_int,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td
+            };
+        }
+        else if (pos === "WR") {
+            return {
+                gp: this.gp,
+                recieve_rec: this.recieve_rec,
+                recieve_yds: this.recieve_yds,
+                recieve_avg: this.recieve_avg,
+                recieve_td: this.recieve_td,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td
+            };
+        }
+        else if (pos === "TE") {
+            return {
+                gp: this.gp,
+                recieve_rec: this.recieve_rec,
+                recieve_yds: this.recieve_yds,
+                recieve_avg: this.recieve_avg,
+                recieve_td: this.recieve_td,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td
+            };
+        }
+        else if (pos === "K") {
+            return {
+                gp: this.gp,
+                fg_att: this.fg_att,
+                fg_made: this.fg_made
+            };
+        }
+        else {
+            return {
+                gp: this.gp,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td,
+                pass_comp: this.pass_comp,
+                pass_att: this.pass_att,
+                pass_yds: this.pass_yds,
+                pass_td: this.pass_td,
+                pass_int: this.pass_int,
+                recieve_rec: this.recieve_rec,
+                recieve_yds: this.recieve_yds,
+                recieve_avg: this.recieve_avg,
+                recieve_td: this.recieve_td,
+                fg_att: this.fg_att,
+                fg_made: this.fg_made
+            };
+        }
+    }
+
+    /**
+     * Filters stats headings based on input pos.
+     * @param {string} pos - The position of the player.
+     * @returns {list} The filtered listed headings.
+     */
+    static filterStatsHeadings(pos) {
+        if (pos === "RB") {
+            return ["Gp", "Rush Att", "Rush Yds", "Rush Avg", "Rush Td", "Recieve Rec",
+                "Recieve Yds", "Recieve Avg", "Recieve Td"];
+        }
+        else if (pos === "QB") {
+            return ["Gp", "Pass Comp", "Pass Att", "Pass Yds", "Pass Td", "Pass Int",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "WR") {
+            return ["Gp", "Recieve Rec", "Recieve Yds", "Recieve Avg", "Recieve Td",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "TE") {
+            return ["Gp", "Recieve Rec", "Recieve Yds", "Recieve Avg", "Recieve Td",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "K") {
+            return ["Gp", "Fg Att", "Fg Made"];
+        }
+        else {
+            return ["Gp", "Rush Att", "Rush Yds", "Rush Avg", "Rush Td", "Pass Comp",
+                "Pass Att", "Pass Yds", "Pass Td", "Pass Int", "Recieve Rec", "Recieve Yds",
+                "Recieve Avg", "Recieve Td", "Fg Att", "Fg Made"];
+        }
     }
 
     /**
@@ -248,6 +513,33 @@ export class PlayerStats2023 {
             data.recieve_td,
             data.fg_att,
             data.fg_made
+        );
+    }
+
+    /**
+     * Create a PlayerStats2023 object from a response object.
+     * @param {object} response - The response object.
+     * @returns {PlayerStats2023} The PlayerStats2023 object.
+     */
+    static fromResponse(response) {
+        return new PlayerStats2023(
+            response.player_id,
+            response.gp,
+            response.rush_att,
+            response.rush_yds,
+            response.rush_avg,
+            response.rush_td,
+            response.pass_comp,
+            response.pass_att,
+            response.pass_yds,
+            response.pass_td,
+            response.pass_int,
+            response.recieve_rec,
+            response.recieve_yds,
+            response.recieve_avg,
+            response.recieve_td,
+            response.fg_att,
+            response.fg_made
         );
     }
 }

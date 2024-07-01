@@ -337,7 +337,7 @@ export class PlayerStatsWeek {
      * @param {string} pos - The player's position.
      * @returns {object} The player's statistics.
      */
-    filter_stats(pos) {
+    filterStats(pos) {
         if (pos === "RB") {
             return {
                 week_points: this.week_points,
@@ -396,7 +396,54 @@ export class PlayerStatsWeek {
         } else {
             return {
                 week_points: this.week_points,
+                rush_att: this.rush_att,
+                rush_yds: this.rush_yds,
+                rush_avg: this.rush_avg,
+                rush_td: this.rush_td,
+                pass_comp: this.pass_comp,
+                pass_att: this.pass_att,
+                pass_yds: this.pass_yds,
+                pass_td: this.pass_td,
+                pass_int: this.pass_int,
+                recieve_rec: this.recieve_rec,
+                recieve_yds: this.recieve_yds,
+                recieve_avg: this.recieve_avg,
+                recieve_td: this.recieve_td,
+                fg_att: this.fg_att,
+                fg_made: this.fg_made
             };
+        }
+    }
+
+    /**
+     * Filters stats headings based on input pos.
+     * @param {string} pos - The position of the player.
+     * @returns {list} The filtered listed headings.
+     */
+    static filterStatsHeadings(pos) {
+        if (pos === "RB") {
+            return ["Points", "Rush Att", "Rush Yds", "Rush Avg", "Rush Td", "Recieve Rec",
+                "Recieve Yds", "Recieve Avg", "Recieve Td"];
+        }
+        else if (pos === "QB") {
+            return ["Points", "Pass Comp", "Pass Att", "Pass Yds", "Pass Td", "Pass Int",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "WR") {
+            return ["Points", "Recieve Rec", "Recieve Yds", "Recieve Avg", "Recieve Td",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "TE") {
+            return ["Points", "Recieve Rec", "Recieve Yds", "Recieve Avg", "Recieve Td",
+                "Rush Att", "Rush Yds", "Rush Avg", "Rush Td"];
+        }
+        else if (pos === "K") {
+            return ["Points", "Fg Att", "Fg Made"];
+        }
+        else {
+            return ["Points", "Rush Att", "Rush Yds", "Rush Avg", "Rush Td", "Pass Comp",
+                "Pass Att", "Pass Yds", "Pass Td", "Pass Int", "Recieve Rec", "Recieve Yds",
+                "Recieve Avg", "Recieve Td", "Fg Att", "Fg Made"];
         }
     }
 

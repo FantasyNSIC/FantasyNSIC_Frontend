@@ -148,7 +148,7 @@ const PlayersPage = () => {
                             </div>)}
                     </div>
                     {showPlayerDisplay && <NSICPlayerDisplay
-                        handleClose={closePlayerDisplay} player_id={playerID} />}
+                        handleClose={closePlayerDisplay} player_id={playerID} actionButton={"add"}/>}
                 </div>
             </div>
             <div className="players-page-footer-container" />

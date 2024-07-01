@@ -19,7 +19,7 @@
     height: 90%;
     background-color: rgb(226, 226, 226);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border: solid 1px rgb(226, 226, 226);
+    border: solid 3px black;
     border-radius: 10px;
     z-index: 1001;
 }
@@ -30,6 +30,15 @@
     width: 100%;
     height: 35%;
     border-bottom: solid 2px black;
+}
+
+.nsic-player-display-top-info-team-graphic {
+    display: flex;
+    flex-direction: row;
+    width: 45%;
+    height: 100%;
+    background-color: var(--background-color);
+    border-top-left-radius: 5px;
 }
 
 .nsic-player-display-top-info-diag-overlay {
@@ -46,20 +55,33 @@
     clip-path: polygon(65% 0%, 85% 0%, 55% 100%, 35% 100%);
 }
 
-.nsic-player-display-top-info-team-graphic {
+.nsic-player-display-top-info-team-graphic-logo-container {
     display: flex;
-    width: 45%;
+    flex-direction: column;
+    width: 100%;
     height: 100%;
-    background-color: var(--background-color);
-    border-top-left-radius: 10px;
+}
+
+.nsic-player-display-team-graphic-jersey-number-container {
+    display: flex;
+    direction: rtl;
+    align-items: center;
+    width: 100%;
+    height: 15%;
+    padding-top: 20px;
+}
+
+.nsic-player-display-team-graphic-jersey-number {
+    font-size: 35px;
+    font-family: fantasy;
+    color: rgb(226, 226, 226);
+    margin-right: 20px;
 }
 
 .nsic-player-display-team-big-logo {
     width: 150px;
     height: 150px;
     padding: 10px;
-    margin-left: auto;
-    margin-top: auto;
 }
 
 .nsic-player-display-top-info-player-general-container {
@@ -93,4 +115,240 @@
         border: solid 2px gray;
         cursor: pointer;
     }
+}
+
+.nsic-player-display-general-name-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 20%;
+}
+
+.nsic-player-display-general-name {
+    font-size: 25px;
+    font-family: monospace;
+}
+
+.nsic-player-display-general-info-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+}
+
+.nsic-player-display-general-info {
+    font-size: 15px;
+    font-family: monospace;
+    margin-left: 35px;
+}
+
+.nsic-player-display-general-info-hwtp-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 30%;
+}
+
+.nsic-player-display-general-info-hwtp {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.nsic-player-display-general-info-hwtp-heading-container {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    height: 50%;
+}
+
+.nsic-player-display-general-info-hwtp-heading {
+    font-size: 15px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.nsic-player-display-general-info-hwtp-info-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+.nsic-player-display-general-info-hwtp-info {
+    font-size: 15px;
+    font-family: monospace;
+}
+
+.nsic-player-display-action-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    border-bottom: solid 2px black;
+}
+
+.nsic-player-display-action-button-add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 50%;
+    background-color: rgb(47 199 47);
+    border: solid 5px rgb(25 168 25);
+    color: rgb(226, 226, 226);
+    font-size: 25px;
+    font-family: monospace;
+    border-radius: 30px;
+    &:hover {
+        background-color: rgb(25 168 25);
+        cursor: pointer;
+    }
+}
+
+.nsic-player-display-action-button-drop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 50%;
+    background-color: rgb(199 47 47);
+    border: solid 5px rgb(168 25 25);
+    color: rgb(226, 226, 226);
+    font-size: 25px;
+    font-family: monospace;
+    border-radius: 30px;
+    &:hover {
+        background-color: rgb(168 25 25);
+        cursor: pointer;
+    }
+}
+
+.nsic-player-display-action-button-none {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 50%;
+    background-color: rgb(135 135 135);
+    border: solid 5px rgb(114 114 114);
+    color: rgb(197 197 197);
+    font-size: 25px;
+    font-family: monospace;
+    border-radius: 30px;
+    &:hover {
+        cursor: not-allowed;
+    }
+}
+
+.nsic-player-display-stats-heading-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5%;
+}
+
+.nsic-player-display-stats-heading {
+    font-size: 20px;
+    font-family: monospace;
+    margin-left: 20px;
+}
+
+.nsic-player-display-weekly-stats-box-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30%;
+}
+
+.nsic-player-display-stats-box {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    height: 90%;
+    background-color: rgb(215 215 215);
+    border: solid 2px rgb(109 109 109);
+    overflow-x: auto;
+}
+
+.nsic-player-display-2023-stats-box-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 12%;
+}
+
+.nsic-player-display-stats-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.nsic-player-display-stats-table-thead {
+    max-width: 200%;
+}
+
+.nsic-player-display-stats-table-tbody {
+    max-width: 200%;
+    height: 20%;
+}
+
+.nsic-player-display-stats-table-tr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+}
+
+.nsic-player-display-stats-table-th {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 13px;
+    font-family: monospace;
+    font-weight: bold;
+    border-bottom: solid 1px black;
+}
+
+.nsic-player-display-stats-table-th-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 13px;
+    font-family: monospace;
+    font-weight: bold;
+    border-right: solid 3px black;
+    border-bottom: solid 1px black;
+}
+
+.nsic-player-display-stats-table-td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 13px;
+    font-family: monospace;
+}
+
+.nsic-player-display-stats-table-td-week {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 13px;
+    font-family: monospace;
+    font-weight: bold;
+    border-right: solid 3px black;
 }

@@ -26,6 +26,7 @@ const PlayersPage = () => {
     // state for displaying player display.
     const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
     const [playerID, setPlayerID] = useState(0);
+    const [playerPos, setPlayerPos] = useState("");
 
     // state for displaying error message
     const [showError, setShowError] = useState(false);
@@ -51,8 +52,9 @@ const PlayersPage = () => {
     }
 
     // Function for handling displaying pop up when player is clicked.
-    function handlePlayerDisplay(player_id) {
+    function handlePlayerDisplay(player_id, player_pos) {
         setPlayerID(player_id);
+        setPlayerPos(player_pos);
         setShowPlayerDisplay(true);
     }
 
@@ -60,12 +62,14 @@ const PlayersPage = () => {
     function closePlayerDisplay() {
         setShowPlayerDisplay(false);
         setPlayerID(0);
+        setPlayerPos("");
     }
 
     const PlayerObject = ({player}) => {
         const name = `${player.first_name} ${player.last_name}`
         return (
-            <div className="players-page-player-object" onClick={() => handlePlayerDisplay(player.player_id)}>
+            <div className="players-page-player-object" onClick={() => 
+                    handlePlayerDisplay(player.player_id, player.pos)}>
                 <img className="players-page-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="players-page-player-info">{name}</div>
                 <div className="players-page-player-info">{player.pos}</div>
@@ -148,7 +152,8 @@ const PlayersPage = () => {
                             </div>)}
                     </div>
                     {showPlayerDisplay && <NSICPlayerDisplay
-                        handleClose={closePlayerDisplay} player_id={playerID} actionButton={"add"}/>}
+                        handleClose={closePlayerDisplay} player_id={playerID}
+                        playerPos={playerPos} actionButton={"add"}/>}
                 </div>
             </div>
             <div className="players-page-footer-container" />

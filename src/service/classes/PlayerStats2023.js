@@ -347,7 +347,7 @@ export class PlayerStats2023 {
      * @param {string} pos - The position of the player.
      * @returns {dict} The filtered dictionary object.
      */
-    static filterStats(pos) {
+    filterStats(pos) {
         if (pos === "RB") {
             return {
                 gp: this.gp,

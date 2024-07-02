@@ -10,6 +10,7 @@ import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse
 
 // POST
 import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
+import { ConfirmationResponse } from "./classes/responses/ConfirmationResponse.js";
 
 // base URL for the backend API
 const fantasyURL = "http://localhost:5001"
@@ -24,6 +25,8 @@ const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
 
 // API endpoints POST
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
+const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
+const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 
 // GET functions =============================================================
 export function getMyTeamInfo(user_team_id) {
@@ -128,6 +131,50 @@ export function getNSICPlayerInfo(player_id) {
             console.log('Success', response);
             const nsicPlayerResponse = NSICPlayerResponse.fromResponse(response);
             resolve(nsicPlayerResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function addNSICPlayerToRoster(player_id, user_team_id, league_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${addNSICPlayerEndpoint}`, {
+            player_id: player_id,
+            user_team_id: user_team_id,
+            league_id: league_id
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function dropNSICPlayerFromRoster(player_id, user_team_id, league_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${dropNSICPlayerEndpoint}`, {
+            player_id: player_id,
+            user_team_id: user_team_id,
+            league_id: league_id
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
         })
         .catch((error) => {
             console.log('Error:', error);

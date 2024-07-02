@@ -17,6 +17,10 @@ const PlayersPage = () => {
     // state to hold the players
     const [resPlayers, setPlayers] = useState([]);
 
+    // state for triggering reload of players
+    const [reloadPlayers, setReloadPlayers] = useState(false);
+    const [pauseButtons, setPauseButtons] = useState(false);
+
     // state to hold active filter
     const [activeFilter, setActiveFilter] = useState("ALL");
 
@@ -44,7 +48,8 @@ const PlayersPage = () => {
             }
         };
         fetchPlayers();
-    }, []);
+        setPauseButtons(false);
+    }, [reloadPlayers]);
 
     // handle filter change
     function handleFilterChange(filter) {
@@ -59,17 +64,21 @@ const PlayersPage = () => {
     }
 
     // Handles closing the player display.
-    function closePlayerDisplay() {
+    function closePlayerDisplay(reload = false) {
         setShowPlayerDisplay(false);
         setPlayerID(0);
         setPlayerPos("");
+        if (reload) {
+            setPauseButtons(true);
+            setReloadPlayers(!reloadPlayers);
+        }
     }
 
     const PlayerObject = ({player}) => {
         const name = `${player.first_name} ${player.last_name}`
         return (
             <div className="players-page-player-object" onClick={() => 
-                    handlePlayerDisplay(player.player_id, player.pos)}>
+                    { if (!pauseButtons) { handlePlayerDisplay(player.player_id, player.pos) }}}>
                 <img className="players-page-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="players-page-player-info">{name}</div>
                 <div className="players-page-player-info">{player.pos}</div>

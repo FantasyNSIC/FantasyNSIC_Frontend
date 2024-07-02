@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { getNSICPlayerInfo } from "../../service/fantasyService";
+import { addNSICPlayerToRoster, dropNSICPlayerFromRoster } from "../../service/fantasyService";
 import { getBigLogoFunction } from "../../images/bigLogos/getBigLogoFunction";
 import { getTeamColorMain, getTeamColorSecondary } from "./getTeamColorFunction.js";
 import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle, FiSlash } from "react-icons/fi";
@@ -8,11 +10,17 @@ import { NSICPlayer } from "../../service/classes/NSICPlayer";
 import { NSICTeam } from "../../service/classes/NSICTeam";
 import { PlayerStats2023 } from "../../service/classes/PlayerStats2023";
 import { PlayerStatsWeek } from "../../service/classes/PlayerStatsWeek.js";
+import { ConfirmationResponse } from "../../service/classes/responses/ConfirmationResponse.js";
 import "./NSICPlayerDisplay.less";
 
 // Main component for displaying player information.
 const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "none"}) => {
     if (player_id === 0) { return null; }
+
+    // grab URL params
+    const [searchParams] = useSearchParams();
+    const user_team_id = searchParams.get("user_team_id");
+    const league_id = searchParams.get("league_id");
     
     // Use state to hold the player information.
     const [playerGeneralInfo, setPlayerGeneralInfo] = useState(NSICPlayer.empty_player());
@@ -25,6 +33,20 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
     const [playerStats2023Checked, setPlayerStats2023Checked] = useState(false);
     const [playerStatsWeekFilter, setPlayerStatsWeekFilter] = useState(playerPos);
     const [playerStats2023Filter, setPlayerStats2023Filter] = useState(playerPos);
+
+    // Use state for handling action button param switch.
+    const [actionButtonState, setActionButtonState] = useState(actionButton);
+
+    // Use state to hold the confirmation popup.
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
+    // Use state for triggering a reload of the base page.
+    const [reloadBasePage, setReloadBasePage] = useState(false);
+
+    // Use state for the confirmation response.
+    const [showConfirmationResponse, setShowConfirmationResponse] = useState(false);
+    const [confirmationResponse, setConfirmationResponse] = useState(ConfirmationResponse.createGeneralResponse());
+    const [pauseButton, setPauseButton] = useState(false);
 
     // Use state to hold the error message.
     const [showError, setShowError] = useState(false);
@@ -70,6 +92,55 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             });
         }
     };
+
+    // Async function for adding a player to the roster.
+    async function addPlayerToRoster(player_id, user_team_id, league_id) {
+        try {
+            const response = await addNSICPlayerToRoster(player_id, user_team_id, league_id);
+            setConfirmationResponse(response);
+            setShowConfirmationResponse(true);
+        } catch (exception) {
+            setShowConfirmationResponse(true);
+        }
+    }
+
+    // Async function for dropping a player from the roster.
+    async function dropPlayerFromRoster(player_id, user_team_id, league_id) {
+        try {
+            const response = await dropNSICPlayerFromRoster(player_id, user_team_id, league_id);
+            setConfirmationResponse(response);
+            setShowConfirmationResponse(true);
+        } catch (exception) {
+            setShowConfirmationResponse(true);
+        }
+    }
+
+    // Function for handling any action from confirming popup.
+    function handleActionConfirm(action) {
+        return () => {
+            setShowConfirmation(false);
+            setPauseButton(true);
+            if (action === "add") {
+                addPlayerToRoster(player_id, user_team_id, league_id);
+            } else if (action === "drop") {
+                dropPlayerFromRoster(player_id, user_team_id, league_id);
+            }
+            setActionButtonState("none");
+            setReloadBasePage(true);
+            setPauseButton(false);
+        }
+    }
+    
+    // Function for handling cancel popup.
+    function handleCancel() {
+        setShowConfirmation(false);
+    }
+
+    // Function for handling closing the NSIC Player Display.
+    function handleXButton() {
+        if (reloadBasePage) { handleClose(true); }
+        else { handleClose(); }
+    }
 
     // Stats table for displaying weekly stats.
     const WeeklyStatsTable = ({ headings, data, pos }) => {
@@ -141,6 +212,26 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
         );
     };
 
+    // Confirmation popup for adding or dropping a player.
+    const ConfirmationPopup = ({ action, onConfirm, onCancel }) => {
+        return (
+            <div className="nsic-player-display-confirmation-popup-overlay">
+                <div className="nsic-player-display-confirmation-popup-content">
+                    <div className="nsic-player-display-confirmation-popup-message-container">
+                        <div className="nsic-player-display-confirmation-popup-message">
+                            Are you sure you want to {action} this player?</div>
+                    </div>
+                    <div className="nsic-player-display-confirmation-popup-actions">
+                        <div className="nsic-player-display-confirmation-popup-action-button-confirm"
+                            onClick={onConfirm(action)}>Confirm</div>
+                        <div className="nsic-player-display-confirmation-popup-action-button-cancel"
+                            onClick={onCancel}>Cancel</div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
     return ReactDOM.createPortal(
         (
         <div className="nsic-player-display-overlay">
@@ -165,8 +256,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                     </div>
                     <div className="nsic-player-display-top-info-player-general-container">
                         <div className="nsic-player-display-heading-buttons">
-                            <div className="nsic-player-display-x-button" onClick={() => handleClose()}>
-                                <FiX />
+                            <div className="nsic-player-display-x-button"
+                                onClick={() => { if (!pauseButton) { handleXButton() }}}><FiX />
                             </div>
                         </div>
                         <div className="nsic-player-display-general-name-container">
@@ -227,11 +318,11 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                     </div>
                 </div>
                 <div className="nsic-player-display-action-button-container">
-                    {actionButton === "add" && (<div className="nsic-player-display-action-button-add">
-                        <FiPlusCircle/>ADD</div>)}
-                    {actionButton === "drop" && (<div className="nsic-player-display-action-button-drop">
-                        <FiMinusCircle/>DROP</div>)}
-                    {actionButton === "none" && (<div className="nsic-player-display-action-button-none">
+                    {actionButtonState === "add" && (<div className="nsic-player-display-action-button-add"
+                        onClick={() => setShowConfirmation(true)}><FiPlusCircle/>ADD</div>)}
+                    {actionButtonState === "drop" && (<div className="nsic-player-display-action-button-drop"
+                        onClick={() => setShowConfirmation(true)}><FiMinusCircle/>DROP</div>)}
+                    {actionButtonState === "none" && (<div className="nsic-player-display-action-button-none">
                         <FiSlash/>NONE</div>)}
                 </div>
                 <div className="nsic-player-display-stats-heading-container">
@@ -271,6 +362,17 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                     </div>
                 </div>
             </div>
+            {showConfirmation && (<ConfirmationPopup action={actionButtonState} onConfirm={handleActionConfirm}
+                onCancel={handleCancel}/>)}
+            {showConfirmationResponse && (<div className="nsic-player-display-confirmation-response-overlay"
+                onClick={() => setShowConfirmationResponse(false)}>
+                <div className={`nsic-player-display-confirmation-response-content${confirmationResponse.success ? "-true" : "-false"}`}>
+                    <div className="nsic-player-display-confirmation-response-message-container">
+                        <div className="nsic-player-display-confirmation-response-message">
+                            {confirmationResponse.message}</div>
+                    </div>
+                </div>
+            </div>)}
         </div>
         ), document.getElementById("portal-root")
     )

@@ -32,6 +32,10 @@ const MyTeamPage = () => {
     const [teamLosses, setTeamLosses] = useState("--");
     const [teamRoster, setTeamRoster] = useState(new UserRoster());
 
+    // state for reloading roster after changes
+    const [reloadRoster, setReloadRoster] = useState(false);
+    const [pauseButtons, setPauseButtons] = useState(false);
+
     // state for displaying player display.
     const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
     const [playerID, setPlayerID] = useState(0);
@@ -57,7 +61,8 @@ const MyTeamPage = () => {
             }
         };
         fetchMyTeamInfo();
-    }, []);
+        setPauseButtons(false);
+    }, [reloadRoster]);
 
     // Function for handling displaying pop up when player is clicked.
     function handlePlayerDisplay(player_id, player_pos) {
@@ -67,10 +72,14 @@ const MyTeamPage = () => {
     }
 
     // Handles closing the player display.
-    function closePlayerDisplay() {
+    function closePlayerDisplay(reload = false) {
         setShowPlayerDisplay(false);
         setPlayerID(0);
         setPlayerPos("");
+        if (reload) {
+            setPauseButtons(true);
+            setReloadRoster(!reloadRoster);
+        }
     }
 
     // Component for displaying the rostered players of the user-team.
@@ -85,7 +94,7 @@ const MyTeamPage = () => {
                 <div className="my-team-page-roster-object-pos-box">{pos}</div>
                 <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="my-team-page-roster-object-info-name"
-                    onClick={() => handlePlayerDisplay(player.player_id, player.pos)}>{name}</div>
+                    onClick={() => { if (!pauseButtons) {handlePlayerDisplay(player.player_id, player.pos)}}}>{name}</div>
                 <div className="my-team-page-roster-object-info">{player.pos}</div>
                 <div className="my-team-page-roster-object-info">{player.cls}</div>
                 <div className="my-team-page-roster-object-info">{player.total_points}</div>

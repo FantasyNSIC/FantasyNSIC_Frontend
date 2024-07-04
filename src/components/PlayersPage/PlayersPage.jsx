@@ -45,10 +45,11 @@ const PlayersPage = () => {
             } catch (exception) {
                 setShowError(true);
                 setError(exception.message); // Access the message property of the error
+            } finally {
+                setPauseButtons(false);
             }
         };
         fetchPlayers();
-        setPauseButtons(false);
     }, [reloadPlayers]);
 
     // handle filter change

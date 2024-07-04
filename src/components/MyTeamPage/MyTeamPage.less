@@ -435,3 +435,43 @@
         cursor: not-allowed;
     }
 }
+
+.my-team-page-confirmation-response-overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.387);
+    z-index: 1007;
+}
+
+.my-team-page-confirmation-response-content-false {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 10%;
+    background-color: rgb(255, 139, 139);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: solid 3px rgb(255, 68, 68);
+    border-radius: 10px;
+    z-index: 1008;
+}
+
+.my-team-page-confirmation-response-message-container {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.my-team-page-confirmation-response-message {
+    font-size: 25px;
+    font-family: monospace;
+}

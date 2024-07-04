@@ -75,6 +75,36 @@ export class UserRoster {
     }
 
     /**
+     * returns roster list based on input.
+     * @param {string} position - The position of the player.
+     * @returns {NSICPlayer[]} - The list of players in the position.
+     */
+    getRosterList(position) {
+        if (position === 'QB') {
+            return this.QB;
+        } else if (position === 'RB') {
+            return this.RB;
+        } else if (position === 'WR') {
+            return this.WR;
+        } else if (position === 'TE') {
+            return this.TE;
+        } else if (position === 'K') {
+            return this.K;
+        } else if (position === 'BENCH') {
+            return this.BENCH;
+        }
+    }
+
+    /**
+     * Filters bench player based on input position.
+     * @param {string} position - The position of the player.
+     * @returns {NSICPlayer[]} - The list of players in the bench.
+     */
+    getBenchList(position) {
+        return this.BENCH.filter((player) => player.pos === position || player.player_id === 0);
+    }
+
+    /**
      * Returns a dictionary representation of the roster.
      * @returns {Object} - The dictionary representation of the roster.
      */

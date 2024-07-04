@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getMyTeamInfo } from "../../service/fantasyService.js";
+import ReactDOM from "react-dom";
+import { getMyTeamInfo, moveNSICPlayersOnRoster } from "../../service/fantasyService.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
-import { FiAlertTriangle } from "react-icons/fi";
+import { ConfirmationResponse } from "../../service/classes/responses/ConfirmationResponse.js";
+import { FiAlertTriangle, FiX } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
 import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
@@ -15,6 +17,7 @@ const MyTeamPage = () => {
     // grab URL params
     const [searchParams] = useSearchParams();
     const user_team_id = searchParams.get("user_team_id");
+    const league_id = searchParams.get("league_id");
 
     // state for displaying general error message, roster erros
     const [showError, setShowError] = useState(false);
@@ -32,6 +35,10 @@ const MyTeamPage = () => {
     const [teamLosses, setTeamLosses] = useState("--");
     const [teamRoster, setTeamRoster] = useState(new UserRoster());
 
+    // Use state for the confirmation response.
+    const [showConfirmationResponse, setShowConfirmationResponse] = useState(false);
+    const [confirmationResponse, setConfirmationResponse] = useState(ConfirmationResponse.createGeneralResponse());
+
     // state for reloading roster after changes
     const [reloadRoster, setReloadRoster] = useState(false);
     const [pauseButtons, setPauseButtons] = useState(false);
@@ -40,6 +47,12 @@ const MyTeamPage = () => {
     const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
     const [playerID, setPlayerID] = useState(0);
     const [playerPos, setPlayerPos] = useState("");
+    const [actionButton, setActionButton] = useState("none");
+
+    // state for displaying move player pop up.
+    const [showMovePlayerPop, setShowMovePlayerPop] = useState(false);
+    const [movePlayer, setMovePlayer] = useState(null);
+    const [movePlayerPos, setMovePlayerPos] = useState("");
 
     // Fetch the user-team's information and roster when the component renders.
     useEffect(() => {
@@ -58,16 +71,38 @@ const MyTeamPage = () => {
             } catch (exception) {
                 setError(exception.message); // Access the message property of the error
                 setShowError(true);
+            } finally {
+                setPauseButtons(false);
             }
         };
         fetchMyTeamInfo();
-        setPauseButtons(false);
     }, [reloadRoster]);
 
+    // Async function for handling moving players.
+    async function handleMovePlayer(player_id_1, player_id_2) {
+        try {
+            setPauseButtons(true);
+            const response = await moveNSICPlayersOnRoster(user_team_id, league_id, player_id_1, player_id_2);
+            if (response.success) {
+                setShowMovePlayerPop(false);
+                setReloadRoster(!reloadRoster);
+            } else {
+                setConfirmationResponse(response);
+                setShowConfirmationResponse(true);
+                setPauseButtons(false);
+            }
+        } catch (exception) {
+            confirmationResponse.message = exception.message;
+            setShowConfirmationResponse(true);
+            setPauseButtons(false);
+        }
+    }
+
     // Function for handling displaying pop up when player is clicked.
-    function handlePlayerDisplay(player_id, player_pos) {
+    function handlePlayerDisplay(player_id, player_pos, action = "none") {
         setPlayerID(player_id);
         setPlayerPos(player_pos);
+        setActionButton(action);
         setShowPlayerDisplay(true);
     }
 
@@ -94,11 +129,13 @@ const MyTeamPage = () => {
                 <div className="my-team-page-roster-object-pos-box">{pos}</div>
                 <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="my-team-page-roster-object-info-name"
-                    onClick={() => { if (!pauseButtons) {handlePlayerDisplay(player.player_id, player.pos)}}}>{name}</div>
+                    onClick={() => { if (!pauseButtons) {handlePlayerDisplay(player.player_id, player.pos, "drop")}}}>{name}</div>
                 <div className="my-team-page-roster-object-info">{player.pos}</div>
                 <div className="my-team-page-roster-object-info">{player.cls}</div>
                 <div className="my-team-page-roster-object-info">{player.total_points}</div>
-                <div className="my-team-page-roster-move-button">Move</div>
+                <div className="my-team-page-roster-move-button"
+                    onClick={() => { if (!pauseButtons) {setMovePlayer(player); setMovePlayerPos(pos);
+                        setShowMovePlayerPop(true); }}}>Move</div>
             </div>
         );
     }
@@ -124,6 +161,81 @@ const MyTeamPage = () => {
                 key={index} player={object} pos={"BENCH"} />)}
                 {/* TODO: Add overflow active roster spot? */}
             </div>
+        )
+    }
+
+    // Display pop for handling moving players.
+    const MovePlayerPopUp = ({player, pos}) => {
+        if (player === null || pos === "") return (<div></div>);
+        let posRoster = []
+        let altPos = ""
+        if (pos === "BENCH") { posRoster = teamRoster.getRosterList(player.pos); altPos = player.pos;}
+        else { posRoster = teamRoster.getBenchList(player.pos); altPos = "BENCH";}
+        const playerName = `${player.first_name} ${player.last_name}`;
+
+        // UseEffect for disabling the background scrolling.
+        useEffect(() => {
+            if (player !== null) { document.body.classList.add('no-scroll')}
+            else { document.body.classList.remove('no-scroll') }
+            return () => { document.body.classList.remove('no-scroll') }
+        }, [player]);
+
+        return ReactDOM.createPortal(
+            (
+            <div className="my-team-page-move-player-overlay">
+                <div className="my-team-page-move-player-content">
+                    <div className="my-team-page-move-player-heading-container">
+                        <div className="my-team-page-move-player-heading">Move Player:</div>
+                        <div className="my-team-page-move-player-close-button"
+                            onClick={() => { if (!pauseButtons) {setShowMovePlayerPop(false);}}}><FiX/></div>
+                    </div>
+                    <div className="my-team-page-move-player-main-player-container">
+                        <div className="my-team-page-roster-object-pos-box">{pos}</div>
+                        <div className="my-team-page-move-player-main-player-info">
+                            <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
+                            <div className="my-team-page-roster-object-info-name"
+                                onClick={() => { if (!pauseButtons) {handlePlayerDisplay(player.player_id, player.pos)}}}>{playerName}</div>
+                            <div className="my-team-page-roster-object-info">{player.pos}</div>
+                            <div className="my-team-page-move-player-here-button-null">Here</div>
+                        </div>
+                    </div>
+                    <div className="my-team-page-move-player-sub-players-container">
+                        {posRoster.map((object, index) => { if (object.player_id === 0) { return (
+                            <div key={index} className="my-team-page-move-player-sub-player-container">
+                                <div className="my-team-page-roster-object-pos-box">{altPos}</div>
+                                <div className="my-team-page-move-player-sub-player-info-empty">
+                                    <div className="my-team-page-move-player-here-button-empty"
+                                        onClick={() => { if (!pauseButtons) handleMovePlayer(player.player_id, null)}}>Here</div>
+                                </div>
+                            </div>) }
+                            return (
+                                <div key={index} className="my-team-page-move-player-sub-player-container">
+                                    <div className="my-team-page-roster-object-pos-box">{altPos}</div>
+                                    <div className="my-team-page-move-player-sub-player-info">
+                                        <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(object.team_id)} />
+                                        <div className="my-team-page-roster-object-info-name"
+                                            onClick={() => { if (!pauseButtons) {handlePlayerDisplay(object.player_id, object.pos)}}}>
+                                            {`${object.first_name} ${object.last_name}`}</div>
+                                        <div className="my-team-page-roster-object-info">{object.pos}</div>
+                                        <div className="my-team-page-move-player-here-button"
+                                            onClick={() => { if (!pauseButtons) {handleMovePlayer(player.player_id, object.player_id)}}}>
+                                                Here</div>
+                                    </div>
+                                </div>
+                            );})}
+                    </div>
+                    {showConfirmationResponse && (<div className="my-team-page-confirmation-response-overlay"
+                        onClick={() => setShowConfirmationResponse(false)}>
+                        <div className="my-team-page-confirmation-response-content-false">
+                            <div className="my-team-page-confirmation-response-message-container">
+                                <div className="my-team-page-confirmation-response-message">
+                                    {confirmationResponse.message}</div>
+                            </div>
+                        </div>
+                    </div>)}
+                </div>
+            </div>
+            ), document.getElementById("portal-root")
         )
     }
     
@@ -178,7 +290,8 @@ const MyTeamPage = () => {
                     </div>
                     {showPlayerDisplay && <NSICPlayerDisplay
                         handleClose={closePlayerDisplay} player_id={playerID}
-                        playerPos={playerPos} actionButton={"drop"}/>}
+                        playerPos={playerPos} actionButton={actionButton}/>}
+                    {showMovePlayerPop && <MovePlayerPopUp player={movePlayer} pos={movePlayerPos} />}
                 </div>
             </div>
             <div className="my-team-page-footer-container" />

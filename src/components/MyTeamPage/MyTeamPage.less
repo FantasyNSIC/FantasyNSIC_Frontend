@@ -187,6 +187,7 @@
     font-family: monospace;
     font-size: 17px;
     font-weight: bold;
+    border-right: solid 2px black;
     background-color: rgb(168, 168, 168);
 }
 
@@ -267,4 +268,210 @@
     width: 100%;
     height: 50px;
     background-color: rgb(0, 21, 97);
+}
+
+.my-team-page-move-player-overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.my-team-page-move-player-content {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 70%;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+.my-team-page-move-player-heading-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.my-team-page-move-player-heading {
+    font-size: 25px;
+    font-family: monospace;
+    margin-left: 10px;
+}
+
+.my-team-page-move-player-close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin-left: 65%;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        border: solid 2px gray;
+        cursor: pointer;
+    }
+}
+
+.my-team-page-move-player-main-player-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 5px black;
+}
+
+.my-team-page-move-player-main-player-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(213 213 213);
+}
+
+.my-team-page-move-player-sub-players-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+.my-team-page-move-player-sub-player-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.my-team-page-move-player-sub-player-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
+
+.my-team-page-move-player-sub-player-info-empty {
+    display: flex;
+    align-items: center;
+    direction: rtl;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.my-team-page-move-player-here-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    background-color: transparent;
+    border: solid 2px rgb(79 255 76);
+    border-radius: 50px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(51, 255, 48);
+    }
+}
+
+.my-team-page-move-player-here-button-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    background-color: transparent;
+    border: solid 2px rgb(79 255 76);
+    border-radius: 50px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-right: 7%;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(51, 255, 48);
+    }
+}
+
+.my-team-page-move-player-here-button-null {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    background-color: rgb(174, 174, 174);
+    border: solid 2px rgb(129 129 129);
+    border-radius: 50px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    &:hover {
+        cursor: not-allowed;
+    }
+}
+
+.my-team-page-confirmation-response-overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.387);
+    z-index: 1007;
+}
+
+.my-team-page-confirmation-response-content-false {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    height: 10%;
+    background-color: rgb(255, 139, 139);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: solid 3px rgb(255, 68, 68);
+    border-radius: 10px;
+    z-index: 1008;
+}
+
+.my-team-page-confirmation-response-message-container {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.my-team-page-confirmation-response-message {
+    font-size: 25px;
+    font-family: monospace;
 }

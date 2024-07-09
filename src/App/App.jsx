@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.less';
 
+import LoginPage from '../components/LoginPage/LoginPage.jsx';
 import MyTeamPage from '../components/MyTeamPage/MyTeamPage.jsx';
 import PlayersPage from '../components/PlayersPage/PlayersPage.jsx';
 import MatchupPage from '../components/MatchupPage/MatchupPage.jsx';
@@ -15,7 +16,8 @@ export default class App extends Component {
     return (
       <Router>
         <Routes>
-            <Route path="/" element={<Navigate to="/myteam" />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/myteam" element={<MyTeamPage />} />
             <Route path="/players" element={<PlayersPage />} />
             <Route path="/matchup" element={<MatchupPage />} />

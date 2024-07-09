@@ -243,7 +243,7 @@ const MyTeamPage = () => {
         <div className="my-team-page-main-container">
             <PageHeading />
             <div className="my-team-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="my-team-page-background-container">
                 <div className="my-team-page-content-container">
                     <div className="my-team-page-team-info-container">

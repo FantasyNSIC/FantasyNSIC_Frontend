@@ -2,21 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import './PageSelectionBar.less';
 
-const PageSelectionBar = () => {
+const PageSelectionBar = ({userTeamId, leagueId}) => {
     return (
         <div className="page-selection-bar-main-container">
             <div className="page-selection-bar-button-container">
-                <Link to="/myteam" className="page-selection-bar-button">My Team</Link>
+                <Link to={`/myteam?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">My Team</Link>
                 <div className="page-selection-bar-divider" />
-                <Link to="/players" className="page-selection-bar-button">Players</Link>
+                <Link to={`/players?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">Players</Link>
                 <div className="page-selection-bar-divider" />
-                <Link to="/matchup" className="page-selection-bar-button">Matchup</Link>
+                <Link to={`/matchup?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">Matchup</Link>
                 <div className="page-selection-bar-divider" />
-                <Link to="/scoreboard" className="page-selection-bar-button">Scoreboard</Link>
+                <Link to={`/scoreboard?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">Scoreboard</Link>
                 <div className="page-selection-bar-divider" />
-                <Link to="/league" className="page-selection-bar-button">League</Link>
+                <Link to={`/league?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">League</Link>
                 <div className="page-selection-bar-divider" />
-                <Link to="/standings" className="page-selection-bar-button">Standings</Link>
+                <Link to={`/standings?user_team_id=${userTeamId}&league_id=${leagueId}`}
+                    className="page-selection-bar-button">Standings</Link>
             </div>
         </div>
     );

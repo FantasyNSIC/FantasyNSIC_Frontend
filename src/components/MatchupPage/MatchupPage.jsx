@@ -16,6 +16,7 @@ const MatchupPage = () => {
     // Grab URL params
     const [searchParams] = useSearchParams();
     const user_team_id = searchParams.get("user_team_id");
+    const league_id = searchParams.get("league_id");
 
     // State to hold matchup info
     const [current_week, setCurrentWeek] = useState("--");
@@ -160,7 +161,7 @@ const MatchupPage = () => {
         <div className="matchup-page-main-container">
             <PageHeading />
             <div className="matchup-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="matchup-page-background-container">
                 <div className="matchup-page-content-container">
                     <div className="matchup-page-current-week-container">

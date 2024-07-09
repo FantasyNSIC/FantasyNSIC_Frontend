@@ -11,6 +11,7 @@ const StandingsPage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
     // State to hold the list of standings
@@ -82,7 +83,7 @@ const StandingsPage = () => {
         <div className="standings-page-main-container">
             <PageHeading />
             <div className="standings-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="standings-page-background-container">
                 <div className="standings-page-content-container">
                     <div className="standings-page-title-container">

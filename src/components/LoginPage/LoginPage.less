@@ -90,10 +90,21 @@
 
 .login-page-buttons-container {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 50px;
+}
+
+.login-page-team-selection-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin-top: 50px;
 }
 
 .login-page-sign-in-button {
@@ -110,6 +121,23 @@
         cursor: pointer;
         background-color: rgb(77 156 223);
     }
+}
+
+.login-page-back-button {
+    width: 100px;
+    height: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: monospace;
+    color: white;
+    background-color: rgb(119, 119, 119);
+    border: solid 2px rgb(89, 89, 89);
+    border-radius: 10px;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(89, 89, 89);
+    }
+
 }
 
 .login-page-error-container {
@@ -135,4 +163,38 @@
     font-size: 17px;
     font-family: monospace;
     color: rgb(56, 56, 56);
+}
+
+.login-page-team-selection-team-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+}
+
+.login-page-team-selection-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-left: 50px;
+}
+
+.login-page-team-selection-team-text {
+    font-size: 17px;
+    font-family: monospace;
+    color: rgb(56, 56, 56);
+    margin-left: 30px;
+}
+
+.login-page-buttons-divider-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 25px;
+}
+
+.login-page-buttons-divider {
+    height: 100%;
+    border-right: solid 2px rgb(87, 87, 87);
 }

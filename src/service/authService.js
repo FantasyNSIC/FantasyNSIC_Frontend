@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // base URL for the backend API
-const fantasyURL = "http://localhost:5001"
+const fantasyURL = "https://localhost:5001"
 
 // API Auth endpoints
 const loginEndpoint = `${fantasyURL}/auth/login`;

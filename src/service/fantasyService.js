@@ -13,7 +13,7 @@ import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
 import { ConfirmationResponse } from "./classes/responses/ConfirmationResponse.js";
 
 // base URL for the backend API
-const fantasyURL = "http://localhost:5001"
+const fantasyURL = "https://localhost:5001"
 
 // API endpoints GET
 const getMyTeamInfoEndpoint = `${fantasyURL}/db/getMyTeamInfo`;

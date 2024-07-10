@@ -12,6 +12,7 @@ const PlayersPage = () => {
 
     // grab URL params
     const [searchParams] = useSearchParams();
+    const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
     // state to hold the players
@@ -115,7 +116,7 @@ const PlayersPage = () => {
         <div className="players-page-main-container">
             <PageHeading />
             <div className="players-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="players-page-background-container">
                 <div className="players-page-content-container">
                     <div className="players-page-filter-container">

@@ -11,6 +11,7 @@ const ScoreboardPage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
     // State to hold scoreboard info and matchups.
@@ -109,7 +110,7 @@ const ScoreboardPage = () => {
         <div className="scoreboard-page-main-container">
             <PageHeading />
             <div className="scoreboard-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="scoreboard-page-background-container">
                 <div className="scoreboard-page-content-container">
                     <div className="scoreboard-page-heading-container">

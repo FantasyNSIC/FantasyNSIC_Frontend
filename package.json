@@ -4,76 +4,76 @@
     "description": "(nsic-fantasy-football-application)",
     "main": "index.js",
     "scripts": {
-      "test": "jest --no-cache",
-      "test:watch": "jest --watch",
-      "test:coverage": "jest --coverage",
-      "start": "webpack-dev-server",
-      "build": "webpack"
+        "test": "jest --no-cache",
+        "test:watch": "jest --watch",
+        "test:coverage": "jest --coverage",
+        "start": "webpack-dev-server",
+        "build": "webpack"
     },
     "jest": {
-      "verbose": true,
-      "testEnvironment": "jsdom",
-      "setupFilesAfterEnv": [
-        "./test/jestSetup.js"
-      ],
-      "moduleFileExtensions": [
-        "js",
-        "jsx"
-      ],
-      "moduleNameMapper": {
-        "^.+\\.(css|less)$": "identity-obj-proxy",
-        "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/test/fileMock.js"
-      }
+        "verbose": true,
+        "testEnvironment": "jsdom",
+        "setupFilesAfterEnv": [
+            "./test/jestSetup.js"
+        ],
+        "moduleFileExtensions": [
+            "js",
+            "jsx"
+        ],
+        "moduleNameMapper": {
+            "^.+\\.(css|less)$": "identity-obj-proxy",
+            "\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/test/fileMock.js"
+        }
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/FantasyNSIC/FantasyNSIC_Frontend"
+        "type": "git",
+        "url": "git+https://github.com/FantasyNSIC/FantasyNSIC_Frontend"
     },
     "keywords": [
-      "football",
-      "fantasy",
-      "application",
-      "nsic"
+        "football",
+        "fantasy",
+        "application",
+        "nsic"
     ],
     "author": "NSICFantasy",
     "license": "ISC",
     "bugs": {
-      "url": "https://github.com/FantasyNSIC/FantasyNSIC_Frontend/issues"
+        "url": "https://github.com/FantasyNSIC/FantasyNSIC_Frontend/issues"
     },
     "homepage": "https://github.com/FantasyNSIC/FantasyNSIC_Frontend#readme",
     "devDependencies": {
-      "@babel/cli": "^7.23.9",
-      "@babel/core": "^7.23.9",
-      "@babel/preset-env": "^7.23.9",
-      "@babel/preset-react": "^7.23.3",
-      "@testing-library/jest-dom": "^6.4.2",
-      "@testing-library/react": "^14.2.1",
-      "babel-loader": "^9.1.3",
-      "clean-webpack-plugin": "^4.0.0",
-      "css-loader": "^6.10.0",
-      "file-loader": "^6.2.0",
-      "html-webpack-plugin": "^5.6.0",
-      "identity-obj-proxy": "^3.0.0",
-      "jest": "^29.7.0",
-      "jest-environment-jsdom": "^29.7.0",
-      "less": "^4.2.0",
-      "less-loader": "^12.2.0",
-      "mini-css-extract-plugin": "^2.8.0",
-      "react-test-renderer": "^18.2.0",
-      "webpack": "^5.90.1",
-      "webpack-cli": "^5.1.4",
-      "webpack-dev-server": "^4.15.1"
+        "@babel/cli": "^7.23.9",
+        "@babel/core": "^7.23.9",
+        "@babel/preset-env": "^7.23.9",
+        "@babel/preset-react": "^7.23.3",
+        "@testing-library/jest-dom": "^6.4.2",
+        "@testing-library/react": "^14.2.1",
+        "babel-loader": "^9.1.3",
+        "clean-webpack-plugin": "^4.0.0",
+        "css-loader": "^6.10.0",
+        "file-loader": "^6.2.0",
+        "html-webpack-plugin": "^5.6.0",
+        "identity-obj-proxy": "^3.0.0",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "less": "^4.2.0",
+        "less-loader": "^12.2.0",
+        "mini-css-extract-plugin": "^2.8.0",
+        "react-test-renderer": "^18.2.0",
+        "webpack": "^5.90.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1"
     },
     "dependencies": {
-      "nginx": "^1.0.8",
-      "axios": "^1.6.7",
-      "prop-types": "^15.8.1",
-      "react": "^18.2.0",
-      "react-dom": "^18.2.0",
-      "react-dom-factories": "^1.0.2",
-      "react-router": "^6.22.0",
-      "react-icons": "^5.2.1",
-      "react-router-dom": "^6.22.3"
+        "axios": "^1.6.7",
+        "dotenv": "^16.4.5",
+        "nginx": "^1.0.8",
+        "prop-types": "^15.8.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-dom-factories": "^1.0.2",
+        "react-icons": "^5.2.1",
+        "react-router": "^6.22.0",
+        "react-router-dom": "^6.22.3"
     }
-  }
-  
+}

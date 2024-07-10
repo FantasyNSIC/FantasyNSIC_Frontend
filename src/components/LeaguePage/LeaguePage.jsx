@@ -13,6 +13,7 @@ const LeaguePage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
     // State to hold the league info
@@ -80,7 +81,7 @@ const LeaguePage = () => {
         <div className="league-page-main-container">
             <PageHeading />
             <div className="league-page-split-bar" />
-            <PageSelectionBar />
+            <PageSelectionBar userTeamId={user_team_id} leagueId={league_id}/>
             <div className="league-page-background-container">
                 <div className="league-page-content-container">
                     <div className="league-page-header-info-container">

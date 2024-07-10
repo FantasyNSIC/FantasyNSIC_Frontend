@@ -32,7 +32,7 @@ export function fantasy_login(username, password) {
 export function fantasy_logout() {
     return new Promise((resolve, reject) => {
         axios.post(`${logoutEndpoint}`, {
-        })
+        }, { withCredentials: true })
         .then((response) => {
             console.log('Success', response);
             resolve(response);

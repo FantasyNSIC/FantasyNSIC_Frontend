@@ -1,22 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { fantasy_login, fantasy_logout } from '../../service/authService';
+import { fantasy_login, fantasy_logout, verify_user } from '../../service/authService';
 import './LoginPage.less';
 
 const LoginPage = () => {
+    // State for tracking whether to show the login form or the team selection form
     const [showLogin, setShowLogin] = useState(true);
     const [showUserTeams, setShowUserTeams] = useState(false);
 
+    // State for tracking the username and password input fields
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    // State for tracking the user's teams on login
     const [userTeams, setUserTeams] = useState([]);
 
+    // State for tracking error messages and whether to show them
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [pauseButtons, setPauseButtons] = useState(false);
 
+    // useEffect will check if user session is active and redirect to the user's team if so,
+    // otherwise it will display the login form
+    useEffect(() => {
+        async function verifyUser() {
+            try {
+                const response = await verify_user();
+                if (response.data.status === true) {
+                    if (response.data.user_teams.length === 1) {
+                        const resUserTeamId = response.data.user_teams[0].user_team_id;
+                        const resLeagueId = response.data.user_teams[0].league_id;
+                        navigate(`/myteam?user_team_id=${resUserTeamId}&league_id=${resLeagueId}`);
+                    }
+                    else {
+                        setUserTeams(response.data.user_teams);
+                        setShowLogin(false);
+                        setShowUserTeams(true);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error.message);
+            }
+        }
+        verifyUser();
+    }, []);
+
+    // Event handlers for the username and password input fields
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
@@ -25,6 +55,8 @@ const LoginPage = () => {
         setPassword(e.target.value);
     };
 
+    // Event handler for the login form submission, if users have multiple teams, it will display
+    // the team selection form, otherwise it will redirect to the user's team
     const handleSubmit = async () => {
         try {
             setPauseButtons(true);
@@ -61,6 +93,7 @@ const LoginPage = () => {
         }
     };
 
+    // Team selection form component
     const TeamSelectionPage = ({userTeams = []}) => {
         const [selectedTeam, setSelectedTeam] = useState({ userTeamId: '', leagueId: '' });
 
@@ -73,6 +106,7 @@ const LoginPage = () => {
             }
         };
 
+        // Handles navigating to myteam page with the selected team
         function handleSelectButton() {
             setPauseButtons(true);
             setShowError(false);
@@ -85,6 +119,7 @@ const LoginPage = () => {
             navigate(`/myteam?user_team_id=${selectedTeam.userTeamId}&league_id=${selectedTeam.leagueId}`);
         }
 
+        // Handles logging out and returning to the login form
         async function handleBackButton() {
             try {
                 setPauseButtons(true);

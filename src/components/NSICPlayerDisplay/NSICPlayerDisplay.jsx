@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { getNSICPlayerInfo } from "../../service/fantasyService";
-import { addNSICPlayerToRoster, dropNSICPlayerFromRoster } from "../../service/fantasyService";
+import { addNSICPlayerToRoster, dropNSICPlayerFromRoster, submitWaiverWireClaim } from "../../service/fantasyService";
 import { getBigLogoFunction } from "../../images/bigLogos/getBigLogoFunction";
 import { getTeamColorMain, getTeamColorSecondary } from "./getTeamColorFunction.js";
 import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle, FiSlash } from "react-icons/fi";
@@ -101,6 +101,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             setShowConfirmationResponse(true);
         } catch (exception) {
             setShowConfirmationResponse(true);
+        } finally {
+            setPauseButton(false);
         }
     }
 
@@ -112,6 +114,21 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             setShowConfirmationResponse(true);
         } catch (exception) {
             setShowConfirmationResponse(true);
+        } finally {
+            setPauseButton(false);
+        }
+    }
+
+    // Async function for submitting a waiver wire claim.
+    async function submitWaiverWire(league_id, user_team_id, player_add, player_remove) {
+        try {
+            const response = await submitWaiverWireClaim(league_id, user_team_id, player_add, player_remove);
+            setConfirmationResponse(response);
+            setShowConfirmationResponse(true);
+        } catch (exception) {
+            setShowConfirmationResponse(true);
+        } finally {
+            setPauseButton(false);
         }
     }
 
@@ -124,10 +141,11 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                 addPlayerToRoster(player_id, user_team_id, league_id);
             } else if (action === "drop") {
                 dropPlayerFromRoster(player_id, user_team_id, league_id);
+            } else if (action === "waiver") {
+                submitWaiverWire(league_id, user_team_id, player_id, 0);
             }
             setActionButtonState("none");
             setReloadBasePage(true);
-            setPauseButton(false);
         }
     }
     
@@ -322,6 +340,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                         onClick={() => setShowConfirmation(true)}><FiPlusCircle/>ADD</div>)}
                     {actionButtonState === "drop" && (<div className="nsic-player-display-action-button-drop"
                         onClick={() => setShowConfirmation(true)}><FiMinusCircle/>DROP</div>)}
+                    {actionButtonState === "waiver" && (<div className="nsic-player-display-action-button-waiver"
+                        onClick={() => setShowConfirmation(true)}><FiPlusCircle/>CLAIM</div>)}
                     {actionButtonState === "none" && (<div className="nsic-player-display-action-button-none">
                         <FiSlash/>NONE</div>)}
                 </div>

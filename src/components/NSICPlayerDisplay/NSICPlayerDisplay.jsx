@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { getNSICPlayerInfo } from "../../service/fantasyService";
+import { getNSICPlayerInfo, getUserTeamRoster } from "../../service/fantasyService";
 import { addNSICPlayerToRoster, dropNSICPlayerFromRoster, submitWaiverWireClaim } from "../../service/fantasyService";
 import { getBigLogoFunction } from "../../images/bigLogos/getBigLogoFunction";
+import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { getTeamColorMain, getTeamColorSecondary } from "./getTeamColorFunction.js";
 import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle, FiSlash } from "react-icons/fi";
 import { NSICPlayer } from "../../service/classes/NSICPlayer";
 import { NSICTeam } from "../../service/classes/NSICTeam";
 import { PlayerStats2023 } from "../../service/classes/PlayerStats2023";
 import { PlayerStatsWeek } from "../../service/classes/PlayerStatsWeek.js";
+import { UserRoster } from "../../service/classes/UserRoster.js";
 import { ConfirmationResponse } from "../../service/classes/responses/ConfirmationResponse.js";
 import "./NSICPlayerDisplay.less";
 
@@ -33,6 +35,11 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
     const [playerStats2023Checked, setPlayerStats2023Checked] = useState(false);
     const [playerStatsWeekFilter, setPlayerStatsWeekFilter] = useState(playerPos);
     const [playerStats2023Filter, setPlayerStats2023Filter] = useState(playerPos);
+
+    // Use state for replace player popup.
+    const [showReplacePlayer, setShowReplacePlayer] = useState(false);
+    const [teamRoster, setTeamRoster] = useState(new UserRoster());
+    const [replacePlayer, setReplacePlayer] = useState(0);
 
     // Use state for handling action button param switch.
     const [actionButtonState, setActionButtonState] = useState(actionButton);
@@ -132,6 +139,27 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
         }
     }
 
+    // Function for handling when the waiver button is clicked.
+    async function handleWaiverButton() {
+        setPauseButton(true);
+        setShowReplacePlayer(true);
+        try {
+            const response = await getUserTeamRoster(league_id, user_team_id);
+            setTeamRoster(response);
+        } catch (exception) {
+            setShowReplacePlayer(false);
+            setShowConfirmationResponse(true);
+        } finally {
+            setPauseButton(false);
+        }
+    }
+
+    // Function for handling setting the dropped player for waivers.
+    function handleFillDropWaiverButton(player_id) {
+        setReplacePlayer(player_id);
+        setShowConfirmation(true);
+    }
+
     // Function for handling any action from confirming popup.
     function handleActionConfirm(action) {
         return () => {
@@ -142,7 +170,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             } else if (action === "drop") {
                 dropPlayerFromRoster(player_id, user_team_id, league_id);
             } else if (action === "waiver") {
-                submitWaiverWire(league_id, user_team_id, player_id, 0);
+                submitWaiverWire(league_id, user_team_id, player_id, replacePlayer);
+                setShowReplacePlayer(false);
             }
             setActionButtonState("none");
             setReloadBasePage(true);
@@ -229,6 +258,46 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             </table>
         );
     };
+
+    // Popup for handling replacing players when trying to add/waiver a player.
+    const ReplacePlayerPopup = ({ teamRoster }) => {
+        if (teamRoster === null) { return null; }
+        const rosterBench = teamRoster.getRosterList("BENCH");
+        return (
+            <div className="nsic-player-display-replace-player-popup-overlay">
+                <div className="nsic-player-display-replace-player-popup-content">
+                    <div className="nsic-player-display-replace-player-heading-container">
+                        <div className="nsic-player-display-replace-player-heading">Select player to replace:</div>
+                        <div className="nsic-player-display-replace-player-close-button"
+                            onClick={() => { if (!pauseButton) {setShowReplacePlayer(false);}}}><FiX/></div>
+                    </div>
+                    <div className="nsic-player-display-replace-player-roster-container">
+                        {rosterBench.map((player, index) => { if (player.player_id === 0) { return (
+                        <div key={index} className="nsic-player-display-replace-player-object-container">
+                            <div className="nsic-player-display-replace-player-pos-box">BENCH</div>
+                            <div className="nsic-player-display-replace-player-info-empty">
+                                <div className="nsic-player-display-replace-player-fill-button-empty"
+                                    onClick={() => { if (!pauseButton) handleFillDropWaiverButton(null)}}>Fill</div>
+                            </div>
+                        </div>) }
+                        return (
+                            <div key={index} className="nsic-player-display-replace-player-object-container">
+                                <div className="nsic-player-display-replace-player-pos-box">BENCH</div>
+                                <div className="nsic-player-display-replace-player-info">
+                                    <img className="nsic-player-display-replace-player-team-logo" src={getLogoFunction(player.team_id)} />
+                                    <div className="nsic-player-display-replace-player-info-general">
+                                        {`${player.first_name} ${player.last_name}`}</div>
+                                    <div className="nsic-player-display-replace-player-info-general">{player.pos}</div>
+                                    <div className="nsic-player-display-replace-player-drop-button"
+                                        onClick={() => { if (!pauseButton) handleFillDropWaiverButton(player.player_id)}}>Drop</div>
+                                </div>
+                            </div>
+                        );})}
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     // Confirmation popup for adding or dropping a player.
     const ConfirmationPopup = ({ action, onConfirm, onCancel }) => {
@@ -341,7 +410,7 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                     {actionButtonState === "drop" && (<div className="nsic-player-display-action-button-drop"
                         onClick={() => setShowConfirmation(true)}><FiMinusCircle/>DROP</div>)}
                     {actionButtonState === "waiver" && (<div className="nsic-player-display-action-button-waiver"
-                        onClick={() => setShowConfirmation(true)}><FiPlusCircle/>CLAIM</div>)}
+                        onClick={() => handleWaiverButton()}><FiPlusCircle/>CLAIM</div>)}
                     {actionButtonState === "none" && (<div className="nsic-player-display-action-button-none">
                         <FiSlash/>NONE</div>)}
                 </div>
@@ -382,6 +451,7 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                     </div>
                 </div>
             </div>
+            {showReplacePlayer && (<ReplacePlayerPopup teamRoster={teamRoster}/>)}
             {showConfirmation && (<ConfirmationPopup action={actionButtonState} onConfirm={handleActionConfirm}
                 onCancel={handleCancel}/>)}
             {showConfirmationResponse && (<div className="nsic-player-display-confirmation-response-overlay"

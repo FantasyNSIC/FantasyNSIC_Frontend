@@ -427,6 +427,159 @@
     border-radius: 10px;
 }
 
+.nsic-player-display-replace-player-popup-overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1004;
+}
+
+.nsic-player-display-replace-player-popup-content {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 70%;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px black;
+    border-radius: 10px;
+    z-index: 1005;
+}
+
+.nsic-player-display-replace-player-heading-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.nsic-player-display-replace-player-heading {
+    font-size: 25px;
+    font-family: monospace;
+    margin-left: 10px;
+}
+
+.nsic-player-display-replace-player-close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin-left: 45%;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        border: solid 2px gray;
+        cursor: pointer;
+    }
+}
+
+.nsic-player-display-replace-player-roster-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+.nsic-player-display-replace-player-object-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.nsic-player-display-replace-player-pos-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    font-family: monospace;
+    font-size: 17px;
+    font-weight: bold;
+    border-right: solid 2px black;
+    background-color: rgb(168, 168, 168);
+}
+
+.nsic-player-display-replace-player-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
+
+.nsic-player-display-replace-player-team-logo {
+    width: 70px;
+    height: 70px;
+}
+
+.nsic-player-display-replace-player-info-general {
+    font-family: monospace;
+    font-size: 20px;
+}
+
+.nsic-player-display-replace-player-info-empty {
+    display: flex;
+    align-items: center;
+    direction: rtl;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+    border-bottom: solid 2px black;
+}
+
+.nsic-player-display-replace-player-drop-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    background-color: transparent;
+    border: solid 2px rgb(199 47 47);
+    border-radius: 50px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(199 47 47);
+    }
+}
+
+.nsic-player-display-replace-player-fill-button-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 40px;
+    background-color: transparent;
+    border: solid 2px rgb(79 255 76);
+    border-radius: 50px;
+    font-size: 20px;
+    font-family: monospace;
+    font-weight: bold;
+    margin-right: 7%;
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(51, 255, 48);
+    }
+}
+
 .nsic-player-display-confirmation-popup-overlay {
     position: fixed;
     display: flex;
@@ -437,7 +590,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.387);
-    z-index: 1005;
+    z-index: 1006;
 }
 
 .nsic-player-display-confirmation-popup-content {
@@ -450,7 +603,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border: solid 3px black;
     border-radius: 10px;
-    z-index: 1006;
+    z-index: 1007;
 }
 
 .nsic-player-display-confirmation-popup-message-container {
@@ -521,7 +674,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.387);
-    z-index: 1007;
+    z-index: 1008;
 }
 
 .nsic-player-display-confirmation-response-content-true {
@@ -534,7 +687,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border: solid 3px rgb(61, 255, 68);
     border-radius: 10px;
-    z-index: 1008;
+    z-index: 1009;
 }
 
 .nsic-player-display-confirmation-response-content-false {
@@ -547,7 +700,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border: solid 3px rgb(255, 68, 68);
     border-radius: 10px;
-    z-index: 1008;
+    z-index: 1009;
 }
 
 .nsic-player-display-confirmation-response-message-container {

@@ -10,6 +10,7 @@ import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse
 
 // POST
 import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
+import { UserRoster } from "./classes/UserRoster.js";
 import { ConfirmationResponse } from "./classes/responses/ConfirmationResponse.js";
 
 // base URL for the backend API
@@ -25,6 +26,7 @@ const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
 
 // API endpoints POST
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
+const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
 const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
 const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 const moveNSICPlayerEndpoint = `${fantasyURL}/rq/moveNSICPlayersOnRoster`;
@@ -134,6 +136,27 @@ export function getNSICPlayerInfo(player_id) {
             console.log('Success', response);
             const nsicPlayerResponse = NSICPlayerResponse.fromResponse(response);
             resolve(nsicPlayerResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getUserTeamRoster(league_id, user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${getUserTeamRosterEndpoint}`, {
+            league_id: league_id,
+            user_team_id: user_team_id
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const userRoster = UserRoster.fromResponse(response.data);
+            resolve(userRoster);
         })
         .catch((error) => {
             console.log('Error:', error);

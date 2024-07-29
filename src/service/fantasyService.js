@@ -7,9 +7,11 @@ import { MatchupInfoResponse } from "./classes/responses/MatchupInfoResponse.js"
 import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
+import { WaiverWiresResponse } from "./classes/responses/WaiverWiresResponse.js";
 
 // POST
 import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
+import { UserRoster } from "./classes/UserRoster.js";
 import { ConfirmationResponse } from "./classes/responses/ConfirmationResponse.js";
 
 // base URL for the backend API
@@ -22,12 +24,16 @@ const getMatchupInfoEndpoint = `${fantasyURL}/db/getMatchupInfo`;
 const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
+const getWaiverWireClaimsEndpoint = `${fantasyURL}/db/getWaiverWireClaims`;
 
 // API endpoints POST
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
+const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
 const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
 const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 const moveNSICPlayerEndpoint = `${fantasyURL}/rq/moveNSICPlayersOnRoster`;
+const submitWaiverWireClaimEndpoint = `${fantasyURL}/rq/submitWaiverWireClaim`;
+const deleteWaiverWireClaimEndpoint = `${fantasyURL}/rq/deleteWaiverWireClaim`;
 
 // GET functions =============================================================
 export function getMyTeamInfo(user_team_id) {
@@ -120,6 +126,21 @@ export function getStandingsInfo(league_id) {
     });
 }
 
+export function getWaiverWireClaims(user_team_id, league_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getWaiverWireClaimsEndpoint}?user_team_id=${user_team_id}&league_id=${league_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const waiverWiresResponse = WaiverWiresResponse.fromResponse(response);
+            resolve(waiverWiresResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
 // POST functions ============================================================
 export function getNSICPlayerInfo(player_id) {
     return new Promise((resolve, reject) => {
@@ -132,6 +153,27 @@ export function getNSICPlayerInfo(player_id) {
             console.log('Success', response);
             const nsicPlayerResponse = NSICPlayerResponse.fromResponse(response);
             resolve(nsicPlayerResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getUserTeamRoster(league_id, user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${getUserTeamRosterEndpoint}`, {
+            league_id: league_id,
+            user_team_id: user_team_id
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const userRoster = UserRoster.fromResponse(response.data);
+            resolve(userRoster);
         })
         .catch((error) => {
             console.log('Error:', error);
@@ -191,6 +233,52 @@ export function moveNSICPlayersOnRoster(user_team_id, league_id, player_id_1, pl
             league_id: league_id,
             player_id_1: player_id_1,
             player_id_2: player_id_2
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function submitWaiverWireClaim(league_id, user_team_id, player_add, player_remove) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${submitWaiverWireClaimEndpoint}`, {
+            league_id: league_id,
+            user_team_id: user_team_id,
+            player_add: player_add,
+            player_remove: player_remove
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function deleteWaiverWireClaim(league_id, user_team_id, player_add, player_remove) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${deleteWaiverWireClaimEndpoint}`, {
+            league_id: league_id,
+            user_team_id: user_team_id,
+            player_add: player_add,
+            player_remove: player_remove
         }, { headers: {
                 'Content-Type': 'application/json'
             }

@@ -37,6 +37,9 @@ const PlayersPage = () => {
     const [showError, setShowError] = useState(false);
     const [error, setError] = useState("");
 
+    // state for current day of week for rendering buttons
+    const [dayOfWeek, setDayOfWeek] = useState(new Date().getDay());
+
     // fetch the players when the component renders
     useEffect(() => {
         const fetchPlayers = async () => {
@@ -52,6 +55,15 @@ const PlayersPage = () => {
         };
         fetchPlayers();
     }, [reloadPlayers]);
+
+    // keeps track of the day of the week
+    useEffect(() => {
+        const updateDay = () => {
+            setDayOfWeek(new Date().getDay());
+        };
+        const interval = setInterval(updateDay, 60000);
+        return () => clearInterval(interval);
+    }, []);
 
     // handle filter change
     function handleFilterChange(filter) {
@@ -162,9 +174,15 @@ const PlayersPage = () => {
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>
                             </div>)}
                     </div>
-                    {showPlayerDisplay && <NSICPlayerDisplay
+                    {showPlayerDisplay && (dayOfWeek === 4 || dayOfWeek === 5) && (<NSICPlayerDisplay
                         handleClose={closePlayerDisplay} player_id={playerID}
-                        playerPos={playerPos} actionButton={"add"}/>}
+                        playerPos={playerPos} actionButton={"add"}/>)}
+                    {showPlayerDisplay && (dayOfWeek === 1 || dayOfWeek === 2) && (<NSICPlayerDisplay
+                        handleClose={closePlayerDisplay} player_id={playerID}
+                        playerPos={playerPos} actionButton={"waiver"}/>)}
+                    {showPlayerDisplay && (dayOfWeek === 0 || dayOfWeek === 3 || dayOfWeek === 6) &&
+                        (<NSICPlayerDisplay handleClose={closePlayerDisplay} player_id={playerID}
+                        playerPos={playerPos} actionButton={"none"}/>)}
                 </div>
             </div>
             <div className="players-page-footer-container" />

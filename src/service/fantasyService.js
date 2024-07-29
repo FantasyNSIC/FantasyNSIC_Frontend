@@ -7,6 +7,7 @@ import { MatchupInfoResponse } from "./classes/responses/MatchupInfoResponse.js"
 import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
+import { WaiverWiresResponse } from "./classes/responses/WaiverWiresResponse.js";
 
 // POST
 import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
@@ -23,6 +24,7 @@ const getMatchupInfoEndpoint = `${fantasyURL}/db/getMatchupInfo`;
 const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
+const getWaiverWireClaimsEndpoint = `${fantasyURL}/db/getWaiverWireClaims`;
 
 // API endpoints POST
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
@@ -116,6 +118,21 @@ export function getStandingsInfo(league_id) {
             console.log('Success', response);
             const standingsInfoResponse = StandingsInfoResponse.fromResponse(response);
             resolve(standingsInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getWaiverWireClaims(user_team_id, league_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getWaiverWireClaimsEndpoint}?user_team_id=${user_team_id}&league_id=${league_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const waiverWiresResponse = WaiverWiresResponse.fromResponse(response);
+            resolve(waiverWiresResponse);
         })
         .catch((error) => {
             console.log('Error:', error);

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { getMyTeamInfo, moveNSICPlayersOnRoster } from "../../service/fantasyService.js";
+import { getWaiverWireClaims, deleteWaiverWireClaim } from "../../service/fantasyService.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
 import { ConfirmationResponse } from "../../service/classes/responses/ConfirmationResponse.js";
-import { FiAlertTriangle, FiX } from "react-icons/fi";
+import { WaiverWiresResponse } from "../../service/classes/responses/WaiverWiresResponse.js";
+import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
 import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
@@ -54,6 +56,10 @@ const MyTeamPage = () => {
     const [movePlayer, setMovePlayer] = useState(null);
     const [movePlayerPos, setMovePlayerPos] = useState("");
 
+    // state for displaying active waivers.
+    const [showWaivers, setShowWaivers] = useState(false);
+    const [waivers, setWaivers] = useState(new WaiverWiresResponse([]));
+
     // Fetch the user-team's information and roster when the component renders.
     useEffect(() => {
         const fetchMyTeamInfo = async () => {
@@ -89,11 +95,45 @@ const MyTeamPage = () => {
             } else {
                 setConfirmationResponse(response);
                 setShowConfirmationResponse(true);
-                setPauseButtons(false);
             }
         } catch (exception) {
             confirmationResponse.message = exception.message;
             setShowConfirmationResponse(true);
+        } finally {
+            setPauseButtons(false);
+        }
+    }
+
+    // Async function for fetching the active waivers.
+    async function handleFetchWaivers() {
+        try {
+            setPauseButtons(true);
+            setShowWaivers(true);
+            const response = await getWaiverWireClaims(user_team_id, league_id);
+            setWaivers(response);
+        } catch (exception) {
+            confirmationResponse.message = exception.message;
+            setShowConfirmationResponse(true);
+        } finally {
+            setPauseButtons(false);
+        }
+    }
+
+    // Handle deleting a waiver wire claim.
+    async function handleDeleteWaiverWireClaim(player_add, player_remove) {
+        try {
+            setPauseButtons(true);
+            const response = await deleteWaiverWireClaim(league_id, user_team_id, player_add, player_remove);
+            if (response.success) {
+                handleFetchWaivers();
+            } else {
+                setConfirmationResponse(response);
+                setShowConfirmationResponse(true);
+            }
+        } catch (exception) {
+            confirmationResponse.message = exception.message;
+            setShowConfirmationResponse(true);
+        } finally {
             setPauseButtons(false);
         }
     }
@@ -238,6 +278,83 @@ const MyTeamPage = () => {
             ), document.getElementById("portal-root")
         )
     }
+
+    // Display pop up for active waivers.
+    const WaiverWirePopUp = ({waivers}) => {
+        if (waivers === null) return (<div></div>);
+
+        // UseEffect for disabling the background scrolling.
+        useEffect(() => {
+            if (waivers !== null) { document.body.classList.add('no-scroll')}
+            else { document.body.classList.remove('no-scroll') }
+            return () => { document.body.classList.remove('no-scroll') }
+        }, [waivers]);
+
+        return ReactDOM.createPortal(
+            (
+            <div className="my-team-page-waiver-wire-overlay">
+                <div className="my-team-page-waiver-wire-content">
+                    <div className="my-team-page-waiver-wire-heading-container">
+                        <div className="my-team-page-waiver-wire-heading">Active Waivers:</div>
+                        <div className="my-team-page-waiver-wire-close-button"
+                            onClick={() => { if (!pauseButtons) {setShowWaivers(false);}}}><FiX/></div>
+                    </div>
+                    <div className="my-team-page-waiver-wire-main-container">
+                        {waivers.waiverWireClaims.map((claim, index) => {
+                            const playerNameAdd = `${claim.addedPlayer.first_name} ${claim.addedPlayer.last_name}`;
+                            const playerNameDrop = claim.droppedPlayer === null ? null
+                                : `${claim.droppedPlayer.first_name} ${claim.droppedPlayer.last_name}`;
+                            return (
+                                <div key={index} className="my-team-page-waiver-wire-claim-container">
+                                    <div className="my-team-page-waiver-wire-claim-button-container">
+                                        <div className="my-team-page-waiver-wire-claim-drop-button"
+                                        onClick={() => { if (!pauseButtons) {handleDeleteWaiverWireClaim(
+                                            claim.addedPlayer.player_id, claim.droppedPlayer === null ? null : claim.droppedPlayer.player_id
+                                        )}}}>Drop Claim</div>
+                                    </div>
+                                    <div className="my-team-page-waiver-wire-player-info-added">
+                                        <FiPlusCircle size={36} />
+                                        <img className="my-team-page-roster-object-team-logo" src={
+                                            getLogoFunction(claim.addedPlayer.team_id)} />
+                                        <div className="my-team-page-roster-object-info-name"
+                                            onClick={() => { if (!pauseButtons) {
+                                                handlePlayerDisplay(claim.addedPlayer.player_id, claim.addedPlayer.pos)}}}>
+                                            {playerNameAdd}</div>
+                                        <div className="my-team-page-roster-object-info">{claim.addedPlayer.pos}</div>
+                                    </div>
+                                    {playerNameDrop !== null ? (
+                                        <div className="my-team-page-waiver-wire-player-info-dropped">
+                                            <FiMinusCircle size={36} />
+                                            <img className="my-team-page-roster-object-team-logo" src={
+                                                getLogoFunction(claim.droppedPlayer.team_id)} />
+                                            <div className="my-team-page-roster-object-info-name"
+                                                onClick={() => { if (!pauseButtons) {
+                                                    handlePlayerDisplay(claim.droppedPlayer.player_id, claim.droppedPlayer.pos)}}}>
+                                                {playerNameDrop}</div>
+                                            <div className="my-team-page-roster-object-info">{claim.droppedPlayer.pos}</div>
+                                        </div>
+                                    ) : (
+                                        <div className="my-team-page-waiver-wire-player-info-dropped">
+                                            <div className="my-team-page-roster-object-info-name">None</div>
+                                        </div>
+                                    )}
+                                </div>
+                            );})}
+                    </div>
+                    {showConfirmationResponse && (<div className="my-team-page-confirmation-response-overlay"
+                        onClick={() => setShowConfirmationResponse(false)}>
+                        <div className="my-team-page-confirmation-response-content-false">
+                            <div className="my-team-page-confirmation-response-message-container">
+                                <div className="my-team-page-confirmation-response-message">
+                                    {confirmationResponse.message}</div>
+                            </div>
+                        </div>
+                    </div>)}
+                </div>
+            </div>
+            ), document.getElementById("portal-root")
+        )
+    }
     
     return (
         <div className="my-team-page-main-container">
@@ -263,6 +380,9 @@ const MyTeamPage = () => {
                             <div className="my-team-page-team-details">
                                 <div className="my-team-page-team-details-record-wins">Wins: {teamWins}</div>
                                 <div className="my-team-page-team-details-record-losses">Losses: {teamLosses}</div>
+                                <div className="my-team-page-team-details-description-divider" />
+                                <div className="my-team-page-team-details-active-waivers"
+                                    onClick={() => { if (!pauseButtons) {handleFetchWaivers()}}}>Active Waivers</div>
                             </div>
                         </div>
                         {rosterErrorShow && (<div className="my-team-page-roster-error-message-container">
@@ -292,6 +412,7 @@ const MyTeamPage = () => {
                         handleClose={closePlayerDisplay} player_id={playerID}
                         playerPos={playerPos} actionButton={actionButton}/>}
                     {showMovePlayerPop && <MovePlayerPopUp player={movePlayer} pos={movePlayerPos} />}
+                    {showWaivers && <WaiverWirePopUp waivers={waivers} />}
                 </div>
             </div>
             <div className="my-team-page-footer-container" />

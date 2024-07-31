@@ -40,3 +40,57 @@
     border-left: 2px solid #000000c7;
     height: 80%;
 }
+
+.page-selection-bar-dropdown {
+    position: relative;
+    display: inline-block;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: transparent;
+}
+
+.page-selection-bar-button-dropdown-main {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    color: #000000c7;
+    font-size: 1.5em;
+    font-family: math;
+    text-decoration: none;
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(214, 210, 210, 0.949);
+    }
+}
+
+.page-selection-triangle-indicator {
+    margin-left: 10px;
+}
+
+.page-selection-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.page-selection-dropdown-item {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+    &:hover {
+        background-color: rgb(227, 225, 225);
+    }
+}

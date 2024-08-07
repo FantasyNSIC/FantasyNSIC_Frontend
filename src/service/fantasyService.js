@@ -34,6 +34,7 @@ const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
 const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
 const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 const moveNSICPlayerEndpoint = `${fantasyURL}/rq/moveNSICPlayersOnRoster`;
+const draftNSICPlayerEndpoint = `${fantasyURL}/rq/draftNSICPlayerToRoster`;
 const submitWaiverWireClaimEndpoint = `${fantasyURL}/rq/submitWaiverWireClaim`;
 const deleteWaiverWireClaimEndpoint = `${fantasyURL}/rq/deleteWaiverWireClaim`;
 
@@ -250,6 +251,29 @@ export function moveNSICPlayersOnRoster(user_team_id, league_id, player_id_1, pl
             league_id: league_id,
             player_id_1: player_id_1,
             player_id_2: player_id_2
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function draftNSICPlayerToRoster(player_id, draft_pick, league_id, user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${draftNSICPlayerEndpoint}`, {
+            player_id: player_id,
+            draft_pick: draft_pick,
+            league_id: league_id,
+            user_team_id: user_team_id
         }, { headers: {
                 'Content-Type': 'application/json'
             }

@@ -31,21 +31,29 @@ const DraftBoard = () => {
     const [playerID, setPlayerID] = useState(0);
     const [playerPos, setPlayerPos] = useState("");
 
+    // stats for holding active pick.
+    const [activePick, setActivePick] = useState(null);
+
     // state for handling reload/pausing
     const [reloadDraft, setReloadDraft] = useState(false);
     const [pauseButtons, setPauseButtons] = useState(false);
+
+    // state for holding player display action.
+    const [displayAction, setDisplayAction] = useState("none");
 
     // Fetch the draft info when the component renders
     useEffect(() => {
         const fetchDraftInfo = async () => {
             try {
                 const response = await getDraftBoardInfo(user_team_id, league_id);
-                const draftOrder = response.draft_order.filter(team => team.player_id === null);
-                const draftTaken = response.draft_order.filter(team => team.player_id !== null);
+                const pick = response.draft_order.sort((a, b) => a.draft_pick - b.draft_pick);
+                const draftOrder = pick.filter(p => p.player_id === null);
+                const draftTaken = pick.filter(p => p.player_id !== null);
                 setDraftOrder(draftOrder);
                 setAvailablePlayers(response.available_players);
                 setUserRoster(response.user_roster);
                 setDraftTaken(draftTaken);
+                setActivePick(draftOrder[0]);
             } catch (exception) {
                 print(exception);
             }
@@ -59,7 +67,11 @@ const DraftBoard = () => {
     }
 
     // Function for handling displaying pop up when player is clicked.
-    function handlePlayerDisplay(player_id, player_pos) {
+    function handlePlayerDisplay(player_id, player_pos, where_click) {
+        console.log(activePick);
+        if (where_click === "available" && activePick.user_team_id.toString() === user_team_id) {
+            setDisplayAction("draft");
+        }
         setPlayerID(player_id);
         setPlayerPos(player_pos);
         setShowPlayerDisplay(true);
@@ -70,6 +82,7 @@ const DraftBoard = () => {
         setShowPlayerDisplay(false);
         setPlayerID(0);
         setPlayerPos("");
+        setDisplayAction("none");
     }
 
     // Filtered available players
@@ -126,7 +139,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">QB: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -137,7 +150,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">RB: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -148,7 +161,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">WR: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -159,7 +172,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">TE: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -170,7 +183,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">K: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -181,7 +194,7 @@ const DraftBoard = () => {
                                             <div className="draft-board-team-roster-list-object-wrapper">
                                                 <div className="draft-board-team-roster-list-object-text-bold">BENCH: </div>
                                                 <div className="draft-board-team-roster-list-object-text-name" onClick={() => { if (!pauseButtons)
-                                                    { handlePlayerDisplay(player.player_id, player.pos) }}}>{player_name}</div>
+                                                    { handlePlayerDisplay(player.player_id, player.pos, "roster") }}}>{player_name}</div>
                                             </div>
                                         </div>);
                                     })}
@@ -213,7 +226,7 @@ const DraftBoard = () => {
                                         const player_name = player.first_name + " " + player.last_name;
                                         return (
                                             <div key={index} className="draft-board-available-player-list-object" onClick={() => 
-                                                { if (!pauseButtons) { handlePlayerDisplay(player.player_id, player.pos) }}}>
+                                                { if (!pauseButtons) { handlePlayerDisplay(player.player_id, player.pos, "available") }}}>
                                                 <div className="draft-board-available-player-list-object-wrapper">
                                                     <img src={getLogoFunction(player.team_id)} className="draft-board-available-player-list-object-pic" />
                                                     <div className="draft-board-available-player-list-object-text">{player_name}</div>
@@ -249,7 +262,7 @@ const DraftBoard = () => {
                                                     <div className="draft-board-activity-list-object-text">
                                                         <span className="draft-board-bold">Player: </span>
                                                         <span className="draft-board-name-highlight" onClick={() => { if (!pauseButtons)
-                                                            { handlePlayerDisplay(pick.player_id.player_id, pick.player_id.pos) }}}>{player_name}</span></div>
+                                                            { handlePlayerDisplay(pick.player_id.player_id, pick.player_id.pos, "activity") }}}>{player_name}</span></div>
                                                 </div>
                                                 <div className="draft-board-activity-list-object-text-container">
                                                     <div className="draft-board-activity-list-object-text">
@@ -262,7 +275,7 @@ const DraftBoard = () => {
                         </div>
                     </div>
                     {showPlayerDisplay && (<NSICPlayerDisplay handleClose={closePlayerDisplay} player_id={playerID}
-                        playerPos={playerPos} actionButton={"none"}/>)}
+                        playerPos={playerPos} actionButton={displayAction} draft_pick={activePick.draft_pick}/>)}
                 </div>
             </div>
             <div className="draft-board-footer-container" />

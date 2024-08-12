@@ -7,6 +7,7 @@ import { MatchupInfoResponse } from "./classes/responses/MatchupInfoResponse.js"
 import { ScoreboardInfoResponse } from "./classes/responses/ScoreboardInfoResponse.js";
 import { LeagueInfoResponse } from "./classes/responses/LeagueInfoResponse.js";
 import { StandingsInfoResponse } from "./classes/responses/StandingsInfoResponse.js";
+import { DraftBoardResponse } from "./classes/responses/DraftBoardResponse.js";
 import { WaiverWiresResponse } from "./classes/responses/WaiverWiresResponse.js";
 
 // POST
@@ -24,6 +25,7 @@ const getMatchupInfoEndpoint = `${fantasyURL}/db/getMatchupInfo`;
 const getScoreboardInfoEndpoint = `${fantasyURL}/db/getScoreboardInfo`;
 const getLeagueInfoEndpoint = `${fantasyURL}/db/getLeagueInfo`;
 const getStandingsInfoEndpoint = `${fantasyURL}/db/getStandingsInfo`;
+const getDraftBoardEndpoint = `${fantasyURL}/db/getDraftBoardInfo`;
 const getWaiverWireClaimsEndpoint = `${fantasyURL}/db/getWaiverWireClaims`;
 
 // API endpoints POST
@@ -32,6 +34,7 @@ const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
 const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
 const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 const moveNSICPlayerEndpoint = `${fantasyURL}/rq/moveNSICPlayersOnRoster`;
+const draftNSICPlayerEndpoint = `${fantasyURL}/rq/draftNSICPlayerToRoster`;
 const submitWaiverWireClaimEndpoint = `${fantasyURL}/rq/submitWaiverWireClaim`;
 const deleteWaiverWireClaimEndpoint = `${fantasyURL}/rq/deleteWaiverWireClaim`;
 
@@ -118,6 +121,21 @@ export function getStandingsInfo(league_id) {
             console.log('Success', response);
             const standingsInfoResponse = StandingsInfoResponse.fromResponse(response);
             resolve(standingsInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getDraftBoardInfo(user_team_id, league_id) {
+    return new Promise((resolve, reject) => {
+        axios.get(`${getDraftBoardEndpoint}?user_team_id=${user_team_id}&league_id=${league_id}`)
+        .then((response) => {
+            console.log('Success', response);
+            const draftBoardResponse = DraftBoardResponse.fromResponse(response);
+            resolve(draftBoardResponse);
         })
         .catch((error) => {
             console.log('Error:', error);
@@ -233,6 +251,29 @@ export function moveNSICPlayersOnRoster(user_team_id, league_id, player_id_1, pl
             league_id: league_id,
             player_id_1: player_id_1,
             player_id_2: player_id_2
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const confirmationResponse = ConfirmationResponse.fromResponse(response);
+            resolve(confirmationResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function draftNSICPlayerToRoster(player_id, draft_pick, league_id, user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${draftNSICPlayerEndpoint}`, {
+            player_id: player_id,
+            draft_pick: draft_pick,
+            league_id: league_id,
+            user_team_id: user_team_id
         }, { headers: {
                 'Content-Type': 'application/json'
             }

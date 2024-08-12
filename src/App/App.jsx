@@ -9,6 +9,7 @@ import MatchupPage from '../components/MatchupPage/MatchupPage.jsx';
 import ScoreboardPage from '../components/ScoreboardPage/ScoreboardPage.jsx';
 import LeaguePage from '../components/LeaguePage/LeaguePage.jsx';
 import StandingsPage from '../components/StandingsPage/StandingsPage.jsx';
+import DraftBoard from '../components/DraftBoard/DraftBoard.jsx';
 
 
 export default class App extends Component {
@@ -24,6 +25,7 @@ export default class App extends Component {
             <Route path="/scoreboard" element={<ScoreboardPage />} />
             <Route path="/league" element={<LeaguePage />} />
             <Route path="/standings" element={<StandingsPage />} />
+            <Route path="/draft" element={<DraftBoard />} />
         </Routes>
       </Router>
     );

@@ -1,0 +1,416 @@
+.draft-board-main-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-split-bar {
+    border-top: solid 6px rgb(248, 220, 83);
+    width: 100%;
+}
+
+.draft-board-background-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 120vh;
+    background-color: rgb(0, 21, 97);
+}
+
+.draft-board-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    height: 115vh;
+    background-color: rgb(255, 255, 255, 0.949);
+    border: solid 2px rgb(248, 220, 83);
+    border-radius: 10px;
+}
+
+.draft-board-order-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 15%;
+    border-bottom: solid 4px black;
+}
+
+.draft-board-order-heading-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    padding: 5px;
+}
+
+.draft-board-order-heading-text {
+    font-size: 25px;
+    margin-left: 40px;
+    font-family: monospace;
+    text-decoration: underline;
+}
+
+.draft-board-order-list-turn-indicator-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 90%;
+    background-color: rgba(126, 252, 97, 0.753);
+    border: solid 2px green;
+    border-radius: 10px;
+    margin-left: 50px;
+}
+
+.draft-board-order-list-turn-indicator-bar-text {
+    font-size: 15px;
+    font-family: monospace;
+}
+
+.draft-board-order-list {
+    display: block;
+    width: 100%;
+    height: 80%;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.draft-board-order-list-object {
+    display: inline-block;
+    height: 80%;
+    width: 400px;
+    margin-left: 40px;
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+.draft-board-order-list-object-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-order-list-object-wrapper-gray {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(161, 161, 161, 0.68);
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-order-list-object-pic-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 100%;
+}
+
+.draft-board-order-list-object-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.draft-board-order-list-object-divider {
+    height: 80%;
+    border-left: solid 2px black;
+}
+
+.draft-board-order-list-object-info-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+}
+
+.draft-board-order-list-object-text-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+}
+
+.draft-board-order-list-object-text {
+    font-size: 15px;
+    margin-left: 10px;
+    font-family: monospace;
+}
+
+.draft-board-body-content-conatiner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 85%;
+}
+
+.draft-board-team-roster-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    border-right: solid 4px black;
+}
+
+.draft-board-team-roster-list {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.draft-board-team-roster-list-object {
+    display: inline-block;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 47px;
+}
+
+.draft-board-team-roster-list-object-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-team-roster-list-object-text {
+    font-size: 15px;
+    margin-left: 20px;
+    font-family: monospace;
+}
+
+.draft-board-team-roster-list-object-text-name {
+    font-size: 15px;
+    margin-left: 20px;
+    font-family: monospace;
+    &:hover {
+        color: rgb(39, 210, 219);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.draft-board-team-roster-list-object-text-bold {
+    font-size: 15px;
+    margin-left: 20px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.draft-board-general-heading-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 5%;
+}
+
+.draft-board-general-heading-text {
+    font-size: 20px;
+    margin-left: 10px;
+    font-family: monospace;
+    text-decoration: underline;
+}
+
+.draft-board-player-list-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 60%;
+}
+
+.draft-board-player-list-filter-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    border-bottom: solid 2px black;
+}
+
+.draft-board-player-list-filter-text {
+    font-size: 15px;
+    margin-left: 20px;
+    font-family: monospace;
+}
+
+.draft-board-player-list-filter-button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-player-list-filter-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+    font-family: monospace;
+    margin-left: 10px;
+    border: solid 2px black;
+    border-radius: 20px;
+    background-color: rgb(226, 226, 226);
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
+
+.draft-board-player-list-filter-button-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+    font-family: monospace;
+    margin-left: 10px;
+    border: solid 2px black;
+    border-radius: 20px;
+    background-color: rgb(149, 149, 149);
+}
+
+.draft-board-available-player-list {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.draft-board-available-player-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-available-player-list-object {
+    display: inline-block;
+    width: 95%;
+    height: 75px;
+    margin-top: 10px;
+    border: solid 2px black;
+    border-radius: 10px;
+    &:hover {
+        background-color: lightgray;
+        cursor: pointer;
+    }
+}
+
+.draft-board-available-player-list-object-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-available-player-list-object-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.draft-board-available-player-list-object-text {
+    font-size: 15px;
+    font-family: monospace;
+}
+
+.draft-board-activity-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 20%;
+    border-left: solid 4px black;
+}
+
+.draft-board-activity-list {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.draft-board-activity-list-object {
+    display: inline-block;
+    width: 100%;
+    height: 100px;
+    border-bottom: solid 1px black;
+    border-top: solid 1px black;
+}
+
+.draft-board-activity-list-object-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-activity-list-object-text-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 25px;
+}
+
+.draft-board-activity-list-object-text {
+    font-size: 15px;
+    font-family: monospace;
+}
+
+.draft-board-error-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.draft-board-error-message-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 25px;
+    font-family: monospace;
+    margin-bottom: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(255, 0, 0, 0.5);
+    border: solid 5px red;
+    border-radius: 10px;
+}
+
+.draft-board-footer-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    background-color: rgb(0, 21, 97);
+}
+
+.draft-board-bold {
+    font-weight: bold;
+}
+
+.draft-board-name-highlight {
+    &:hover {
+        color: rgb(39, 210, 219);
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

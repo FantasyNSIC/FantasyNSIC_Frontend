@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { getNSICPlayerInfo, getUserTeamRoster } from "../../service/fantasyService";
-import { addNSICPlayerToRoster, dropNSICPlayerFromRoster, submitWaiverWireClaim } from "../../service/fantasyService";
+import { addNSICPlayerToRoster, dropNSICPlayerFromRoster } from "../../service/fantasyService";
+import { submitWaiverWireClaim, draftNSICPlayerToRoster } from "../../service/fantasyService";
 import { getBigLogoFunction } from "../../images/bigLogos/getBigLogoFunction";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { getTeamColorMain, getTeamColorSecondary } from "./getTeamColorFunction.js";
-import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle, FiSlash } from "react-icons/fi";
+import { FiAlertTriangle, FiX, FiPlusCircle, FiMinusCircle, FiSlash, FiArrowRightCircle } from "react-icons/fi";
 import { NSICPlayer } from "../../service/classes/NSICPlayer";
 import { NSICTeam } from "../../service/classes/NSICTeam";
 import { PlayerStats2023 } from "../../service/classes/PlayerStats2023";
@@ -16,7 +17,7 @@ import { ConfirmationResponse } from "../../service/classes/responses/Confirmati
 import "./NSICPlayerDisplay.less";
 
 // Main component for displaying player information.
-const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "none"}) => {
+const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "none", draft_pick = 0}) => {
     if (player_id === 0) { return null; }
 
     // grab URL params
@@ -139,6 +140,19 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
         }
     }
 
+    // Async function for handling drafting a player to the roster.
+    async function submitDraftPick(player_id, draft_pick, league_id, user_team_id) {
+        try {
+            const response = await draftNSICPlayerToRoster(player_id, draft_pick, league_id, user_team_id);
+            setConfirmationResponse(response);
+            setShowConfirmationResponse(true);
+        } catch (exception) {
+            setShowConfirmationResponse(true);
+        } finally {
+            setPauseButton(false);
+        }
+    }
+
     // Function for handling when the waiver button is clicked.
     async function handleWaiverButton() {
         setPauseButton(true);
@@ -167,14 +181,18 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             setPauseButton(true);
             if (action === "add") {
                 addPlayerToRoster(player_id, user_team_id, league_id);
+                setReloadBasePage(true);
             } else if (action === "drop") {
                 dropPlayerFromRoster(player_id, user_team_id, league_id);
+                setReloadBasePage(true);
             } else if (action === "waiver") {
                 submitWaiverWire(league_id, user_team_id, player_id, replacePlayer);
                 setShowReplacePlayer(false);
+                setReloadBasePage(true);
+            } else if (action === "draft") {
+                submitDraftPick(player_id, draft_pick, league_id, user_team_id);
             }
             setActionButtonState("none");
-            setReloadBasePage(true);
         }
     }
     
@@ -411,6 +429,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                         onClick={() => setShowConfirmation(true)}><FiMinusCircle/>DROP</div>)}
                     {actionButtonState === "waiver" && (<div className="nsic-player-display-action-button-waiver"
                         onClick={() => handleWaiverButton()}><FiPlusCircle/>CLAIM</div>)}
+                    {actionButtonState === "draft" && (<div className="nsic-player-display-action-button-draft"
+                        onClick={() => setShowConfirmation(true)}><FiArrowRightCircle/>DRAFT</div>)}
                     {actionButtonState === "none" && (<div className="nsic-player-display-action-button-none">
                         <FiSlash/>NONE</div>)}
                 </div>

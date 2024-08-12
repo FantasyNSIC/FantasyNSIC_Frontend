@@ -60,6 +60,9 @@ const MyTeamPage = () => {
     const [showWaivers, setShowWaivers] = useState(false);
     const [waivers, setWaivers] = useState(new WaiverWiresResponse([]));
 
+    // state for current day of week for rendering buttons
+    const [dayOfWeek, setDayOfWeek] = useState(new Date().getDay());
+
     // Fetch the user-team's information and roster when the component renders.
     useEffect(() => {
         const fetchMyTeamInfo = async () => {
@@ -169,12 +172,15 @@ const MyTeamPage = () => {
                 <div className="my-team-page-roster-object-pos-box">{pos}</div>
                 <img className="my-team-page-roster-object-team-logo" src={getLogoFunction(player.team_id)} />
                 <div className="my-team-page-roster-object-info-name"
-                    onClick={() => { if (!pauseButtons) {handlePlayerDisplay(player.player_id, player.pos, "drop")}}}>{name}</div>
+                    onClick={() => { if (!pauseButtons && (dayOfWeek === 0 || dayOfWeek === 3 || dayOfWeek === 6)) {
+                        handlePlayerDisplay(player.player_id, player.pos)}
+                        else { handlePlayerDisplay(player.player_id, player.pos, "drop") }}}>{name}</div>
                 <div className="my-team-page-roster-object-info">{player.pos}</div>
                 <div className="my-team-page-roster-object-info">{player.cls}</div>
                 <div className="my-team-page-roster-object-info">{player.total_points}</div>
-                <div className="my-team-page-roster-move-button"
-                    onClick={() => { if (!pauseButtons) {setMovePlayer(player); setMovePlayerPos(pos);
+                <div className={`my-team-page-roster-move-button${dayOfWeek === 0 || dayOfWeek === 6 ? "-disabled" : ""}`}
+                    onClick={() => { if (!pauseButtons && (dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 3 ||
+                        dayOfWeek === 4 || dayOfWeek === 5)) { setMovePlayer(player); setMovePlayerPos(pos);
                         setShowMovePlayerPop(true); }}}>Move</div>
             </div>
         );

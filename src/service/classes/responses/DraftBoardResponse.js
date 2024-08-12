@@ -12,11 +12,13 @@ export class DraftBoardResponse {
      * @param {Array} draft_order - The draft order.
      * @param {Array} available_players - The available players.
      * @param {UserRoster} user_roster - The user roster.
+     * @param {Boolean} draft_enable - Whether the draft is enabled.
      */
-    constructor(draft_order, available_players, user_roster) {
+    constructor(draft_order, available_players, user_roster, draft_enable) {
         this.draft_order = draft_order;
         this.available_players = available_players;
         this.user_roster = user_roster;
+        this.draft_enable = draft_enable;
     }
 
     /**
@@ -77,6 +79,25 @@ export class DraftBoardResponse {
     }
 
     /**
+     * Returns whether the draft is enabled.
+     * @returns {Boolean} Whether the draft is enabled.
+     */
+    getDraftEnable() {
+        return this._draft_enable;
+    }
+
+    /**
+     * Sets whether the draft is enabled.
+     * @param {Boolean} draft_enable - Whether the draft is enabled.
+     */
+    setDraftEnable(draft_enable) {
+        if (typeof draft_enable !== 'boolean') {
+            throw new Error('Draft enable must be a boolean.');
+        }
+        this._draft_enable = draft_enable;
+    }
+
+    /**
      * Returns the draft board response as a JSON object.
      * @returns {Object} The draft board response as a JSON object.
      */
@@ -85,6 +106,7 @@ export class DraftBoardResponse {
             draft_order: this.draft_order.map((draft_order) => draft_order.toJson()),
             available_players: this.available_players.map((player) => player.toJson()),
             user_roster: this.user_roster.toJson(),
+            draft_enable: this.draft_enable
         };
     }
 
@@ -97,7 +119,8 @@ export class DraftBoardResponse {
         return new DraftBoardResponse(
             response.data.draft_order.map((draft_order) => DraftOrder.from_response(draft_order)),
             response.data.available_players.map((player) => NSICPlayer.fromResponse(player)),
-            UserRoster.fromResponse(response.data.user_roster)
+            UserRoster.fromResponse(response.data.user_roster),
+            response.data.draft_enable
         );
     }
 }

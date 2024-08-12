@@ -41,11 +41,20 @@ const DraftBoard = () => {
     // state for holding player display action.
     const [displayAction, setDisplayAction] = useState("none");
 
+    // state for displaying error message
+    const [showError, setShowError] = useState(false);
+    const [error, setError] = useState("");
+
     // Fetch the draft info when the component renders
     useEffect(() => {
         const fetchDraftInfo = async () => {
             try {
                 const response = await getDraftBoardInfo(user_team_id, league_id);
+                if (response.draft_enable === false) {
+                    setError("Your league draft is not enabled");
+                    setShowError(true);
+                    return;
+                }
                 const pick = response.draft_order.sort((a, b) => a.draft_pick - b.draft_pick);
                 const draftOrder = pick.filter(p => p.player_id === null);
                 const draftTaken = pick.filter(p => p.player_id !== null);
@@ -55,7 +64,8 @@ const DraftBoard = () => {
                 setDraftTaken(draftTaken);
                 setActivePick(draftOrder[0]);
             } catch (exception) {
-                print(exception);
+                setShowError(true);
+                setError(exception.message);
             }
         };
         fetchDraftInfo();
@@ -237,6 +247,10 @@ const DraftBoard = () => {
                                                 </div>
                                             </div>);
                                     })}
+                                    {showError && (<div className="draft-board-error-message-container">
+                                        <div className="draft-board-error-message-box">
+                                        <FiAlertTriangle size={64} />{error}, Please try again later.</div>
+                                    </div>)}
                                 </div>
                             </div>
                         </div>

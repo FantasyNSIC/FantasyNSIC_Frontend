@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { FiAlertTriangle, FiArrowLeft } from "react-icons/fi";
 import { getDraftBoardInfo } from "../../service/fantasyService.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
+import { DraftOrder } from "../../service/classes/DraftOrder.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import EmptyProfile from '../../images/EmptyProfile.png';
@@ -32,7 +33,7 @@ const DraftBoard = () => {
     const [playerPos, setPlayerPos] = useState("");
 
     // stats for holding active pick.
-    const [activePick, setActivePick] = useState(null);
+    const [activePick, setActivePick] = useState(new DraftOrder(0, 0, 0, ''));
 
     // state for handling reload/pausing
     const [reloadDraft, setReloadDraft] = useState(false);
@@ -114,11 +115,17 @@ const DraftBoard = () => {
                     <div className="draft-board-order-container">
                         <div className="draft-board-order-heading-container">
                             <div className="draft-board-order-heading-text">Draft Order</div>
+                            {activePick.user_team_id.toString() === user_team_id && (
+                                <div className="draft-board-order-list-turn-indicator-bar">
+                                    <div className="draft-board-order-list-turn-indicator-bar-text">
+                                        It is your turn to pick! Select a player from the list below.
+                                    </div>
+                                </div>)}
                         </div>
                         <div className="draft-board-order-list">
                             {draftOrder.map((team, index) => (
                                 <div key={index} className="draft-board-order-list-object">
-                                    <div className="draft-board-oder-list-object-wrapper">
+                                    <div className={`draft-board-order-list-object-wrapper${team.user_team_id.toString() === user_team_id ? "-gray" : ""}`}>
                                         <div className="draft-board-order-list-object-pic-container">
                                             <img src={EmptyProfile} className="draft-board-order-list-object-pic" />
                                         </div>

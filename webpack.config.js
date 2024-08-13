@@ -29,11 +29,16 @@ module.exports = {
   entry: './src/index.js',
   devtool: 'inline-source-map',
   mode: 'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
   devServer: {
     https: httpsConfig,
     static: {
       directory: path.resolve(__dirname, 'dist'),
     },
+    port: 3001,
   },
   module: {
     rules: [

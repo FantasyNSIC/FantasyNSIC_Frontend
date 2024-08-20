@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { getLeagueInfo } from "../../service/fantasyService.js";
+import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { LeagueConstraint } from "../../service/classes/LeagueConstraint.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import EmptyProfile from '../../images/EmptyProfile.png'
@@ -13,6 +14,7 @@ const LeaguePage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
@@ -30,6 +32,11 @@ const LeaguePage = () => {
     useEffect(() => {
         const fetchLeagueInfo = async () => {
             try {
+                const user = await verify_user();
+                if (!user.data.status || !verify_user_team_creds(user.data.user_teams, user_team_id, league_id)) {
+                    navigate("/login");
+                    return;
+                }
                 const response = await getLeagueInfo(league_id);
                 setLeagueName(response.league_name);
                 setLeagueConstraints(LeagueConstraint.fromConstraintsResponse(response.league_constraint));

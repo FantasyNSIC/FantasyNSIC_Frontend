@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
 import { getMatchupInfo } from "../../service/fantasyService.js";
+import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { TeamRecord } from "../../service/classes/TeamRecord.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
@@ -15,6 +16,7 @@ const MatchupPage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
@@ -47,6 +49,11 @@ const MatchupPage = () => {
     useEffect(() => {
         const fetchMatchupInfo = async () => {
             try {
+                const user = await verify_user();
+                if (!user.data.status || !verify_user_team_creds(user.data.user_teams, user_team_id, league_id)) {
+                    navigate("/login");
+                    return;
+                }
                 const response = await getMatchupInfo(user_team_id);
                 setCurrentWeek(response.current_week);
                 setTeam1Name(response.team_1_name);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { getScroreboardInfo } from "../../service/fantasyService.js";
+import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { FiAlertTriangle } from "react-icons/fi";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
@@ -11,6 +12,7 @@ const ScoreboardPage = () => {
 
     // Grab URL params
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
@@ -27,6 +29,11 @@ const ScoreboardPage = () => {
     useEffect(() => {
         const fetchScoreboardInfo = async () => {
             try {
+                const user = await verify_user();
+                if (!user.data.status || !verify_user_team_creds(user.data.user_teams, user_team_id, league_id)) {
+                    navigate("/login");
+                    return;
+                }
                 const response = await getScroreboardInfo(league_id);
                 setLeagueName(response.league_name);
                 setCurrentWeek(response.current_week);

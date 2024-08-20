@@ -59,3 +59,12 @@ export function verify_user() {
         });
     });
 }
+
+export function verify_user_team_creds(user_teams, user_team_id, league_id) {
+    for (const team of user_teams) {
+        if (team.user_team_id.toString() === user_team_id && team.league_id.toString() === league_id) {
+            return true;
+        }
+    }
+    return false;
+}

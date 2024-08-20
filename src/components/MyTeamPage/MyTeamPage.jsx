@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { getMyTeamInfo, moveNSICPlayersOnRoster } from "../../service/fantasyService.js";
 import { getWaiverWireClaims, deleteWaiverWireClaim } from "../../service/fantasyService.js";
+import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
 import { ConfirmationResponse } from "../../service/classes/responses/ConfirmationResponse.js";
@@ -18,6 +19,7 @@ const MyTeamPage = () => {
 
     // grab URL params
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
     const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
 
@@ -67,6 +69,11 @@ const MyTeamPage = () => {
     useEffect(() => {
         const fetchMyTeamInfo = async () => {
             try {
+                const user = await verify_user();
+                if (!user.data.status || !verify_user_team_creds(user.data.user_teams, user_team_id, league_id)) {
+                    navigate("/login");
+                    return;
+                }
                 const response = await getMyTeamInfo(user_team_id);
                 // TODO: Set the team profile picture.
                 setTeamName(response.teamName);

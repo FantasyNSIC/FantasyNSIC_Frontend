@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import io from "socket.io-client";
 import { FiAlertTriangle, FiArrowLeft } from "react-icons/fi";
 import { getDraftBoardInfo } from "../../service/fantasyService.js";
 import { verify_user, verify_user_team_creds } from "../../service/authService.js";
@@ -14,11 +15,12 @@ import './DraftBoard.less';
 
 const DraftBoard = () => {
 
-    // Grab URL params
+    // Grab URL params, set up socket
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const user_team_id = searchParams.get("user_team_id");
     const league_id = searchParams.get("league_id");
+    const socket = useRef(null);
 
     // State to hold draft info
     const [draftOrder, setDraftOrder] = useState([]);
@@ -38,7 +40,6 @@ const DraftBoard = () => {
     const [activePick, setActivePick] = useState(new DraftOrder(0, 0, 0, ''));
 
     // state for handling reload/pausing
-    const [reloadDraft, setReloadDraft] = useState(false);
     const [pauseButtons, setPauseButtons] = useState(false);
 
     // state for holding player display action.
@@ -74,9 +75,44 @@ const DraftBoard = () => {
             } catch (exception) {
                 setShowError(true);
                 setError(exception.message);
+            } finally {
+                setPauseButtons(false);
             }
         };
         fetchDraftInfo();
+
+        // Set up socket
+        socket.current = io('wss://localhost:5001');
+
+        // Listen for connection event
+        socket.current.on('connect', () => {
+            console.log('Connected to WebSocket server');
+        });
+
+        socket.current.on('disconnect', () => {
+            console.log('Disconnected from WebSocket server');
+        });
+
+        // Listen for draft updates
+        socket.current.on('draft_update', () => {
+            fetchDraftInfo();
+        });
+
+        // Handle WebSocket errors
+        socket.current.on('error', (error) => {
+            console.error('WebSocket error:', error);
+        });
+
+        // Clean up
+        return () => {
+            if (socket.current) {
+                socket.current.off('connect');
+                socket.current.off('disconnect');
+                socket.current.off('draft_update');
+                socket.current.off('error');
+                socket.current.disconnect();
+            }
+        };
     }, []);
 
     // Function for handle available player filter change
@@ -86,7 +122,6 @@ const DraftBoard = () => {
 
     // Function for handling displaying pop up when player is clicked.
     function handlePlayerDisplay(player_id, player_pos, where_click) {
-        console.log(activePick);
         if (where_click === "available" && activePick.user_team_id.toString() === user_team_id) {
             setDisplayAction("draft");
         }
@@ -96,11 +131,16 @@ const DraftBoard = () => {
     }
 
     // Handles closing the player display.
-    function closePlayerDisplay() {
+    function closePlayerDisplay(reload = false) {
         setShowPlayerDisplay(false);
         setPlayerID(0);
         setPlayerPos("");
         setDisplayAction("none");
+        if (reload) {
+            setPauseButtons(true);
+            socket.current.emit('draft_submit', { pick: activePick.draft_pick,
+                user_team_id: user_team_id, league_id: league_id });
+        }
     }
 
     // Filtered available players

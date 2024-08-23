@@ -62,6 +62,7 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
 
     // Fetch the player information when the component renders.
     useEffect(() => {
+        setPauseButton(true);
         const fetchPlayerInfo = async () => {
             try {
                 const response = await getNSICPlayerInfo(player_id);
@@ -72,6 +73,8 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             } catch (exception) {
                 setShowError(true);
                 setError(exception.message); // Access the message property of the error
+            } finally {
+                setPauseButton(false);
             }
         };
         fetchPlayerInfo();
@@ -146,6 +149,9 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
             const response = await draftNSICPlayerToRoster(player_id, draft_pick, league_id, user_team_id);
             setConfirmationResponse(response);
             setShowConfirmationResponse(true);
+            if (response.success) {
+                setReloadBasePage(true);
+            }
         } catch (exception) {
             setShowConfirmationResponse(true);
         } finally {
@@ -424,13 +430,13 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                 </div>
                 <div className="nsic-player-display-action-button-container">
                     {actionButtonState === "add" && (<div className="nsic-player-display-action-button-add"
-                        onClick={() => setShowConfirmation(true)}><FiPlusCircle/>ADD</div>)}
+                        onClick={() => { if (!pauseButton) setShowConfirmation(true)}}><FiPlusCircle/>ADD</div>)}
                     {actionButtonState === "drop" && (<div className="nsic-player-display-action-button-drop"
-                        onClick={() => setShowConfirmation(true)}><FiMinusCircle/>DROP</div>)}
+                        onClick={() => { if (!pauseButton) setShowConfirmation(true)}}><FiMinusCircle/>DROP</div>)}
                     {actionButtonState === "waiver" && (<div className="nsic-player-display-action-button-waiver"
-                        onClick={() => handleWaiverButton()}><FiPlusCircle/>CLAIM</div>)}
+                        onClick={() => { if (!pauseButton) handleWaiverButton(true)}}><FiPlusCircle/>CLAIM</div>)}
                     {actionButtonState === "draft" && (<div className="nsic-player-display-action-button-draft"
-                        onClick={() => setShowConfirmation(true)}><FiArrowRightCircle/>DRAFT</div>)}
+                        onClick={() => { if (!pauseButton) setShowConfirmation(true)}}><FiArrowRightCircle/>DRAFT</div>)}
                     {actionButtonState === "none" && (<div className="nsic-player-display-action-button-none">
                         <FiSlash/>NONE</div>)}
                 </div>

@@ -122,7 +122,6 @@ const DraftBoard = () => {
 
     // Function for handling displaying pop up when player is clicked.
     function handlePlayerDisplay(player_id, player_pos, where_click) {
-        console.log(activePick);
         if (where_click === "available" && activePick.user_team_id.toString() === user_team_id) {
             setDisplayAction("draft");
         }

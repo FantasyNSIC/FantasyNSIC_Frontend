@@ -191,6 +191,7 @@ const NSICPlayerDisplay = ({handleClose, player_id, playerPos, actionButton = "n
                 setReloadBasePage(true);
             } else if (action === "draft") {
                 submitDraftPick(player_id, draft_pick, league_id, user_team_id);
+                setReloadBasePage(true);
             }
             setActionButtonState("none");
         }

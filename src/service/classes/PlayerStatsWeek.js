@@ -448,6 +448,25 @@ export class PlayerStatsWeek {
     }
 
     /**
+     * Creates a list of text values to display and then filters stats that are 0.
+     * @returns {list} The filtered list of text values.
+     */
+    statsTextFilter() {
+        let text = [
+            "Rush-Yds 0.1 " + this.rush_yds + " " + this.rush_yds * 0.1,
+            "Rush-TD 6 " + this.rush_td + " " + this.rush_td * 6,
+            "Pass-Yds 0.03 " + this.pass_yds + " " + this.pass_yds * 0.03,
+            "Pass-TD 4 " + this.pass_td + " " + this.pass_td * 4,
+            "Pass-Int -2 " + this.pass_int + " " + this.pass_int * -2,
+            "Recieve-Rec 1 " + this.recieve_rec + " " + this.recieve_rec,
+            "Recieve-Yds 0.1 " + this.recieve_yds + " " + this.recieve_yds * 0.1,
+            "Recieve-TD 6 " + this.recieve_td + " " + this.recieve_td * 6,
+            "Fg-Made 3 " + this.fg_made + " " + this.fg_made * 3
+        ]
+        return text.filter((stat) => stat.split(" ")[2] !== "0");
+    }
+
+    /**
      * Returns the object as a JSON dictionary.
      * @returns {object} The object as a JSON dictionary.
      */
@@ -525,5 +544,13 @@ export class PlayerStatsWeek {
             response.fg_made,
             response.week_points
         );
+    }
+
+    /**
+     * Returns an empty player statistics object.
+     * @returns {PlayerStatsWeek} The empty player statistics object.
+     */
+    static empty() {
+        return new PlayerStatsWeek(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     }
 }

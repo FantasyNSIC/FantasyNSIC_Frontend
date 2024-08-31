@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { FiAlertTriangle } from "react-icons/fi";
-import { getMatchupInfo } from "../../service/fantasyService.js";
+import { getMatchupInfo, getNSICPlayerStatsWeek } from "../../service/fantasyService.js";
 import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { getLogoFunction } from "../../images/smallLogos/getLogoFuncion.js";
 import { TeamRecord } from "../../service/classes/TeamRecord.js";
 import { UserRoster } from "../../service/classes/UserRoster.js";
+import { PlayerStatsWeek } from "../../service/classes/PlayerStatsWeek.js";
 import PageHeading from "../PageHeading/PageHeading.jsx";
 import PageSelectionBar from "../PageSelectionBar/PageSelectionBar.jsx";
 import NSICPlayerDisplay from "../NSICPlayerDisplay/NSICPlayerDisplay.jsx";
@@ -40,6 +42,12 @@ const MatchupPage = () => {
     const [showPlayerDisplay, setShowPlayerDisplay] = useState(false);
     const [playerID, setPlayerID] = useState(0);
     const [playerPos, setPlayerPos] = useState("");
+
+    // state for displaying player stat sheet.
+    const [showPlayerStatSheet, setShowPlayerStatSheet] = useState(false);
+    const [playerStatSheetName, setPlayerStatSheetName] = useState("");
+    const [playerStatSheet, setPlayerStatSheet] = useState(PlayerStatsWeek.empty());
+    const [playerStatSheetError, setPlayerStatSheetError] = useState(null);
 
     // State for displaying error message
     const [showError, setShowError] = useState(false);
@@ -95,6 +103,29 @@ const MatchupPage = () => {
         setShowPlayerDisplay(true);
     }
 
+    // Function for handling setting and displaying the player stat sheet.
+    async function handlePlayerStatSheet(player_id, player_name) {
+        const week = parseInt(current_week.split("_")[1], 10);
+        try {
+            const response = await getNSICPlayerStatsWeek(player_id, week);
+            setPlayerStatSheet(response);
+            setPlayerStatSheetName(player_name);
+        } catch (exception) {
+            setPlayerStatSheetError(exception.message);
+        } finally {
+            setShowPlayerStatSheet(true);
+        }
+    }
+
+    // Function for handling the closing of the player stat sheet.
+    function handleClosePlayerStatSheet() {
+        setPlayerStatSheet(PlayerStatsWeek.empty());
+        setPlayerStatSheetName("");
+        setPlayerStatSheetError(null);
+        setShowPlayerStatSheet(false);
+    }
+
+
     // Component for displaying the rostered players of any given team.
     const MatchupRosterObject = ({player, pos, isRight = false}) => {
         if(!player && !pos) return(<div></div>);
@@ -117,7 +148,8 @@ const MatchupPage = () => {
                     <div className="matchup-page-roster-object-info">{player.pos}</div>
                 </div>
                 <div className="matchup-page-roster-object-points-container">
-                    <div className="matchup-page-roster-object-info">{player.total_points}</div>
+                    <div className="matchup-page-roster-object-info-name"
+                        onClick={() => handlePlayerStatSheet(player.player_id, name)}>{player.total_points}</div>
                 </div>
             </div>
         );
@@ -161,6 +193,59 @@ const MatchupPage = () => {
                     key={index} player={object} pos={"BENCH"} isRight={true} />)}
                 </div>
             </div>
+        )
+    }
+
+    // Component for displaying individial player point stat sheet calculations.
+    const PlayerStatObject = ({player_stats, player_name}) => {
+        if (playerStatSheetError !== null) return (<div className="matchup-page-player-stat-object-overlay">
+            <div className="matchup-page-player-stat-object-content-error">{playerStatSheetError}</div>
+        </div>);
+        if (player_stats.player_id === 0 || player_name === "") return (<div></div>);
+        const filteredText = player_stats.statsTextFilter();
+
+        // UseEffect for disabling the background scrolling.
+        useEffect(() => {
+            if (player_stats.player_id !== 0) { document.body.classList.add('no-scroll')}
+            else { document.body.classList.remove('no-scroll') }
+            return () => { document.body.classList.remove('no-scroll') }
+        }, [player_stats]);
+
+        return ReactDOM.createPortal(
+            (
+            <div className="matchup-page-player-stat-object-overlay">
+                <div className="matchup-page-player-stat-object-content">
+                    <div className="matchup-page-player-stat-object-header">
+                        <div className="matchup-page-player-stat-object-header-text">
+                            {formatWeekText(current_week)} Stats for {player_name}</div>
+                        <div className="matchup-page-player-stat-object-header-table-top">
+                            <div className="matchup-page-player-stat-object-header-table-top-text">Stat</div>
+                            <div className="matchup-page-player-stat-object-header-table-top-text">Points Per</div>
+                            <div className="matchup-page-player-stat-object-header-table-top-text">#</div>
+                            <div className="matchup-page-player-stat-object-header-table-top-text">Total</div>
+                        </div>
+                    </div>
+                    <div className="matchup-page-player-stat-object-body">
+                        {filteredText.length === 0 ? (
+                            <div className="matchup-page-player-stat-object-body-no-stats-message">No scoring stats available</div>
+                        ) : (
+                            filteredText.map((stat, index) => (
+                                <div key={index} className="matchup-page-player-stat-object-body-row">
+                                    {stat.split(" ").map((text, subIndex) => (
+                                        <div key={subIndex} className="matchup-page-player-stat-object-body-row-text">{text}</div>
+                                    ))}
+                                </div>
+                            ))
+                        )}
+                    </div>
+                    <div className="matchup-page-player-stat-object-footer">
+                        <div className="matchup-page-player-stat-object-footer-button"
+                            onClick={() => handleClosePlayerStatSheet()}>Close</div>
+                        <div className="matchup-page-player-stat-object-footer-text">TOTAL: {player_stats.week_points}</div>
+                    </div>
+                </div>
+            </div>
+            ), document.getElementById("portal-root")
         )
     }
 
@@ -231,6 +316,8 @@ const MatchupPage = () => {
                     {showPlayerDisplay && <NSICPlayerDisplay
                         handleClose={closePlayerDisplay} player_id={playerID}
                         playerPos={playerPos} actionButton={"none"}/>}
+                    {showPlayerStatSheet && <PlayerStatObject
+                        player_stats={playerStatSheet} player_name={playerStatSheetName} />}
                 </div>
             </div>
             <div className="matchup-page-footer-container" />

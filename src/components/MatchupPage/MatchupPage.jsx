@@ -198,7 +198,8 @@ const MatchupPage = () => {
 
     // Component for displaying individial player point stat sheet calculations.
     const PlayerStatObject = ({player_stats, player_name}) => {
-        if (playerStatSheetError !== null) return (<div className="matchup-page-player-stat-object-overlay">
+        if (playerStatSheetError !== null) return (<div className="matchup-page-player-stat-object-overlay"
+            onClick={() => handleClosePlayerStatSheet()}>
             <div className="matchup-page-player-stat-object-content-error">{playerStatSheetError}</div>
         </div>);
         if (player_stats.player_id === 0 || player_name === "") return (<div></div>);

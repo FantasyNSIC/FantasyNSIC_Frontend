@@ -13,6 +13,7 @@ import { WaiverWiresResponse } from "./classes/responses/WaiverWiresResponse.js"
 // POST
 import { NSICPlayerResponse } from "./classes/responses/NSICPlayerResponse.js";
 import { UserRoster } from "./classes/UserRoster.js";
+import { PlayerStatsWeek } from "./classes/PlayerStatsWeek.js";
 import { ConfirmationResponse } from "./classes/responses/ConfirmationResponse.js";
 
 // base URL for the backend API
@@ -31,6 +32,7 @@ const getWaiverWireClaimsEndpoint = `${fantasyURL}/db/getWaiverWireClaims`;
 // API endpoints POST
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
 const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
+const getNSICPlayerStatsWeekEndpoint = `${fantasyURL}/db/getNSICPlayerWeeklyStats`;
 const addNSICPlayerEndpoint = `${fantasyURL}/rq/addNSICPlayerToRoster`;
 const dropNSICPlayerEndpoint = `${fantasyURL}/rq/dropNSICPlayerFromRoster`;
 const moveNSICPlayerEndpoint = `${fantasyURL}/rq/moveNSICPlayersOnRoster`;
@@ -192,6 +194,27 @@ export function getUserTeamRoster(league_id, user_team_id) {
             console.log('Success', response);
             const userRoster = UserRoster.fromResponse(response.data);
             resolve(userRoster);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
+export function getNSICPlayerStatsWeek(player_id, week) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${getNSICPlayerStatsWeekEndpoint}`, {
+            player_id: player_id,
+            week: week
+        }, { headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const playerStatsWeek = PlayerStatsWeek.fromResponse(response.data);
+            resolve(playerStatsWeek);
         })
         .catch((error) => {
             console.log('Error:', error);

@@ -37,10 +37,16 @@ export class StandingsInfoResponse {
      */
     sortRecords() {
         this._records.sort((a, b) => {
-            if (a.losses === b.losses) {
+            if (a.losses !== b.losses) {
+                return a.losses - b.losses;
+            }
+            if (a.wins !== b.wins) {
                 return b.wins - a.wins;
             }
-            return a.losses - b.losses;
+            if (a.points_for !== b.points_for) {
+                return b.points_for - a.points_for;
+            }
+            return a.points_against - b.points_against;
         });
     }
 

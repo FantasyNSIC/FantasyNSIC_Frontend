@@ -152,6 +152,155 @@
     font-family: monospace;
 }
 
+.league-page-user-team-info-object-overlay {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.league-page-user-team-info-object-content {
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    height: 90%;
+    background-color: rgb(255, 255, 255);
+    border: solid 2px black;
+    border-radius: 10px;
+}
+
+.league-page-user-team-info-object-content-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    height: 30%;
+    background-color: rgb(229 133 133);
+    border: solid 2px black;
+    border-radius: 10px;
+    font-size: 30px;
+    font-family: monospace;
+}
+
+.league-page-user-team-info-object-header {
+    display: flex;
+    direction: rtl;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border-bottom: solid black 2px;
+}
+
+.league-page-user-team-info-object-close-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    margin-right: 50px;
+    background-color: rgb(211 203 203);
+    border: solid 2px black;
+    border-radius: 10px;
+    font-size: 20px;
+    font-family: monospace;
+    &:hover {
+        background-color: rgb(170, 169, 169);
+        cursor: pointer;
+    }
+}
+
+.league-page-user-team-info-object-header-text {
+    margin-right: 25%;
+    font-size: 30px;
+    font-family: monospace;
+}
+
+.league-page-user-team-info-object-info-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 20%;
+    background-color: transparent;
+    border-bottom: solid 3px black;
+}
+
+.league-page-user-team-info-object-info-pic-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+}
+
+.league-page-user-team-info-object-info-pic {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+}
+
+.league-page-user-team-info-object-info-divider {
+    border-right: solid 2px black;
+    height: 75%;
+}
+
+.league-page-user-team-info-object-details-container {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.league-page-user-team-info-object-details {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50%;
+    background-color: transparent;
+}
+
+.league-page-user-team-info-object-details-bottom {
+    display: flex;
+    align-items: end;
+    width: 100%;
+    height: 50%;
+    background-color: transparent;
+}
+
+.league-page-user-team-info-object-details-text {
+    margin-left: 50px;
+    font-size: 20px;
+    font-family: monospace;
+}
+
+.league-page-user-team-info-object-details-text-big {
+    margin-left: 50px;
+    font-size: 35px;
+    font-family: monospace;
+}
+
+.league-page-user-team-info-object-roster-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 5%;
+    border-bottom: solid 3px black;
+}
+
+.league-page-user-team-info-object-roster-heading-text {
+    margin-left: 20px;
+    font-size: 25px;
+    font-family: monospace;
+}
+
 .league-page-error-message-container {
     display: flex;
     justify-content: center;

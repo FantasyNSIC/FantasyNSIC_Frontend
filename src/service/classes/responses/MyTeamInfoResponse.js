@@ -85,6 +85,11 @@ export class MyTeamInfoResponse {
         this.overflowPos = overflowPos;
     }
 
+    // Create an empty response object
+    static empty() {
+        return new MyTeamInfoResponse("", "", "", 0, 0, new UserRoster(), false, "");
+    }
+
     // Convert the object to a JSON string
     toJson() {
         return JSON.stringify(this);

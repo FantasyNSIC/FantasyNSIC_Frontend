@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { getLeagueInfo } from "../../service/fantasyService.js";
+import { getLeagueInfo, getUserTeamInfo } from "../../service/fantasyService.js";
 import { verify_user, verify_user_team_creds } from "../../service/authService.js";
 import { LeagueConstraint } from "../../service/classes/LeagueConstraint.js";
 import { FiAlertTriangle } from "react-icons/fi";
+import { MyTeamInfoResponse } from "../../service/classes/responses/MyTeamInfoResponse.js";
 import EmptyProfile from '../../images/EmptyProfile.png'
 import LeagueLogo from '../../images/LeagueLogo.png'
 import PageHeading from "../PageHeading/PageHeading.jsx";
@@ -23,6 +25,11 @@ const LeaguePage = () => {
     const [leagueConstraints, setLeagueConstraints] = useState(new LeagueConstraint(0, 0, 0, 0, 0, 0, 0));
     const [numberOfTeams, setNumberOfTeams] = useState(0);
     const [userTeamList, setUserTeamList] = useState([]);
+
+    // State for user team information display
+    const [showUserTeamObject, setShowUserTeamObject] = useState(false);
+    const [userTeamObject, setUserTeamObject] = useState(MyTeamInfoResponse.empty());
+    const [userTeamObjectError, setUserTeamObjectError] = useState(null);
 
     // State for displaying error message
     const [showError, setShowError] = useState(false);
@@ -50,10 +57,85 @@ const LeaguePage = () => {
         fetchLeagueInfo();
     }, []);
 
+    // Function for fetching user team information
+    async function handleUserTeamInfo(user_team_id) {
+        try {
+            const response = await getUserTeamInfo(user_team_id);
+            setUserTeamObject(response);
+        } catch (exception) {
+            setUserTeamObjectError(exception.message);
+        } finally {
+            setShowUserTeamObject(true);
+        }
+    }
+
+    // Function for closing the user team object
+    function closeUserTeamInfo() {
+        setShowUserTeamObject(false);
+        setUserTeamObject(MyTeamInfoResponse.empty());
+        setUserTeamObjectError(null);
+    }
+
+    // User Team Object component
+    const UserTeamInfoObject = ({userTeamInfo}) => {
+        if (userTeamObjectError !== null) return(<div className="league-page-user-team-info-object-overlay">
+            <div className="league-page-user-team-info-object-content-error">{userTeamObjectError}</div>
+        </div>);
+        if (userTeamInfo.teamName === "") return(<div></div>);
+
+        // UseEffect for disabling the background scrolling.
+        useEffect(() => {
+            if (userTeamInfo.teamName !== "") { document.body.classList.add('no-scroll')}
+            else { document.body.classList.remove('no-scroll') }
+            return () => { document.body.classList.remove('no-scroll') }
+        }, [userTeamInfo]);
+
+        return ReactDOM.createPortal(
+            (
+                <div className="league-page-user-team-info-object-overlay">
+                    <div className="league-page-user-team-info-object-content">
+                        <div className="league-page-user-team-info-object-header">
+                            <div className="league-page-user-team-info-object-close-button"
+                                onClick={() => closeUserTeamInfo()}>X</div>
+                            <div className="league-page-user-team-info-object-header-text">
+                                Team Info - {userTeamInfo.leagueName}</div>
+                        </div>
+                        <div className="league-page-user-team-info-object-info-container">
+                            <div className="league-page-user-team-info-object-info-pic-container">
+                                <img className="league-page-user-team-info-object-info-pic" src={EmptyProfile} />
+                            </div>
+                            <div className="league-page-user-team-info-object-info-divider" />
+                            <div className="league-page-user-team-info-object-details-container">
+                                <div className="league-page-user-team-info-object-details-bottom">
+                                    <div className="league-page-user-team-info-object-details-text-big">
+                                        {userTeamInfo.teamName}</div>
+                                </div>
+                                <div className="league-page-user-team-info-object-details">
+                                    <div className="league-page-user-team-info-object-details-text">
+                                        {userTeamInfo.fullName} | Wins: {userTeamInfo.wins} Losses: {userTeamInfo.losses}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="league-page-user-team-info-object-roster-heading">
+                            <div className="league-page-user-team-info-object-roster-heading-text">Name</div>
+                            <div className="league-page-user-team-info-object-roster-heading-text">Pos</div>
+                            <div className="league-page-user-team-info-object-roster-heading-text">Class</div>
+                            <div className="league-page-user-team-info-object-roster-heading-text">Points</div>
+                        </div>
+                        <div className="league-page-user-team-info-object-roster-container">
+
+                        </div>
+                    </div>
+                </div>
+            ), document.getElementById('portal-root')
+        )
+    };
+
     const UserTeamObject = ({userTeam}) => {
         if (!userTeam) return(<div></div>);
         return (
-            <div className="league-page-user-team-object">
+            <div className="league-page-user-team-object"
+                onClick={() => handleUserTeamInfo(userTeam._user_team_id)}>
                 <div className="league-page-user-team-object-profile-picture-container">
                     {/* TODO: Set up functionality for profile pictures */}
                     <img className="league-page-user-team-object-profile-picture" src={EmptyProfile} />
@@ -118,6 +200,7 @@ const LeaguePage = () => {
                                 <FiAlertTriangle size={64} />{error}, Please try again later.</div>
                             </div>)}
                     </div>
+                    {showUserTeamObject && (<UserTeamInfoObject userTeamInfo={userTeamObject} />)}
                 </div>
             </div>
             <div className="league-page-footer-container" />

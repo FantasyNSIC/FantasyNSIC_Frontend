@@ -30,6 +30,7 @@ const getDraftBoardEndpoint = `${fantasyURL}/db/getDraftBoardInfo`;
 const getWaiverWireClaimsEndpoint = `${fantasyURL}/db/getWaiverWireClaims`;
 
 // API endpoints POST
+const getUserTeamInfoEndpoint = `${fantasyURL}/db/getUserTeamInfo`;
 const getNSICPlayerInfoEndpoint = `${fantasyURL}/db/getNSICPlayerInfo`;
 const getUserTeamRosterEndpoint = `${fantasyURL}/db/getUserTeamRoster`;
 const getNSICPlayerStatsWeekEndpoint = `${fantasyURL}/db/getNSICPlayerWeeklyStats`;
@@ -162,6 +163,25 @@ export function getWaiverWireClaims(user_team_id, league_id) {
 }
 
 // POST functions ============================================================
+export function getUserTeamInfo(user_team_id) {
+    return new Promise((resolve, reject) => {
+        axios.post(`${getUserTeamInfoEndpoint}`, {user_team_id: user_team_id}, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            console.log('Success', response);
+            const userTeamInfoResponse = MyTeamInfoResponse.fromResponse(response);
+            resolve(userTeamInfoResponse);
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+            reject(error);
+        });
+    });
+}
+
 export function getNSICPlayerInfo(player_id) {
     return new Promise((resolve, reject) => {
         axios.post(`${getNSICPlayerInfoEndpoint}`, {player_id: player_id}, {
